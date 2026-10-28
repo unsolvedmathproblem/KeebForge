@@ -1,0 +1,32 @@
+# 1. Bỏ qua các thư mục build và file biên dịch của NetBeans
+build/
+dist/
+nbbuild/
+nbdist/
+*.class
+*.war
+*.ear
+
+# 2. Bỏ qua các file cấu hình cá nhân của NetBeans (Tránh conflict)
+nbproject/private/
+nbproject/Makefile-*.properties
+nbproject/configs/
+nbproject/build-impl.xml
+
+# 3. Bỏ qua các thư mục của IDE khác (phòng trường hợp thành viên khác dùng VS Code/IntelliJ)
+.vscode/
+.idea/
+*.iml
+
+# 4. Bỏ qua các file rác của hệ điều hành
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# 5. Bỏ qua file log
+*.log
+
+nbproject/
+
+# Mật khẩu SQL Server chỉ dùng local, không chia sẻ cùng source.
+/config/db.properties

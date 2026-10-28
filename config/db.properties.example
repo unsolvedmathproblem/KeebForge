@@ -1,0 +1,6 @@
+# File UTF-8. Tạo db.properties local, KHÔNG đóng gói file thật vào WAR.
+# Database riêng cho requirement mới, tạo bằng các script trong database/.
+db.url=jdbc:sqlserver://localhost:1433;databaseName=KeebForce_PRJ301;encrypt=true;trustServerCertificate=true
+db.user=your_sql_login
+db.password=your_local_password
+# trustServerCertificate=true chỉ dành cho SQL Server local dùng chứng chỉ tự ký.
