@@ -34,7 +34,9 @@ a:hover {
     color: var(--orange)
 }
 
-a:focus-visible {
+a:focus-visible,
+button:focus-visible,
+.table-responsive:focus-visible {
     outline: 3px solid var(--orange);
     outline-offset: 5px
 }
@@ -176,11 +178,15 @@ h3 {
     color: #fff
 }
 
+.btn-workshop:focus {
+    box-shadow: 0 0 0 3px rgba(49, 89, 70, .2);
+}
+
 .btn-workshop span {
     margin-left: 22px
 }
 
-.sample-note {
+.hero-note {
     font-size: .74rem;
     color: var(--muted);
     margin-top: 18px;
@@ -304,6 +310,8 @@ h3 {
 }
 
 .workshop-card {
+    display: flex;
+    flex-direction: column;
     background: var(--white);
     border: 1px solid var(--line);
     border-radius: 12px;
@@ -331,11 +339,23 @@ h3 {
 }
 
 .card-detail {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
     border-top: 1px solid var(--line);
     padding-top: 16px;
     font-size: .72rem;
     color: var(--green)
+}
+
+.money {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-size: .95rem;
+    font-weight: 700;
 }
 
 .process-section {
@@ -469,10 +489,15 @@ h3 {
     outline-offset: 4px;
 }
 
-.account-page {
+.page-body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+.page-body > main {
+    flex: 1;
+    min-width: 0;
 }
 
 .auth-main {
@@ -674,7 +699,124 @@ h3 {
     margin-bottom: 20px;
 }
 
+.admin-main {
+    flex: 1;
+    padding-top: 48px;
+    padding-bottom: 56px;
+}
+
+.admin-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.admin-heading h1 {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    margin-bottom: 16px;
+}
+
+.admin-heading .panel-description {
+    margin-bottom: 0;
+}
+
+.data-table-wrap {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--white);
+}
+
+.data-table {
+    min-width: 880px;
+    margin: 0;
+    font-size: .82rem;
+    color: var(--ink);
+}
+
+.data-table th {
+    background: #eeeee7;
+    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.data-table th,
+.data-table td {
+    padding: 18px 16px;
+    vertical-align: middle;
+    border-color: var(--line);
+}
+
+.data-table td {
+    max-width: 280px;
+    overflow-wrap: anywhere;
+}
+
+.user-detail {
+    display: block;
+    color: var(--muted);
+    font-size: .75rem;
+    margin-top: 3px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: .72rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: #e9f0e7;
+    color: var(--green);
+}
+
+.status-locked {
+    background: #fff1ed;
+    color: #8f3029;
+}
+
+.user-status-button {
+    white-space: nowrap;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border: 1px solid;
+}
+
+.button-lock {
+    color: #8f3029;
+    border-color: #edc9bd;
+}
+
+.button-lock:hover {
+    color: #8f3029;
+    background: #fff1ed;
+}
+
+.button-unlock {
+    color: var(--green);
+    border-color: #c5dac5;
+}
+
+.button-unlock:hover {
+    color: var(--green);
+    background: #edf6ed;
+}
+
 @media(max-width:991px) {
+    .nav-shell {
+        flex-wrap: wrap;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        gap: 12px;
+    }
     .hero {
         gap: 28px;
         padding-top: 48px;
@@ -684,6 +826,9 @@ h3 {
         display: none
     }
     .nav-links {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
         gap: 18px
     }
     .keyboard {

@@ -7,10 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Đăng ký — KeebForge</title>
-    <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/css/style.css'/>">
+    <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
-<body class="account-page">
+<body class="page-body">
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <main id="main-content" class="container auth-main auth-main-register">
     <section class="auth-intro" aria-labelledby="intro-title">
@@ -23,9 +22,7 @@
         <p class="eyebrow">CHÀO MỪNG ĐẾN VỚI KEEBFORGE</p>
         <h2 id="form-title">Tạo tài khoản</h2>
         <p class="panel-description">Điền thông tin bên dưới. Số điện thoại có thể bổ sung sau.</p>
-        <c:if test="${not empty errorMessage}">
-            <div class="notice notice-error" role="alert"><c:out value="${errorMessage}" /></div>
-        </c:if>
+        <jsp:include page="/WEB-INF/views/common/messages.jsp" />
         <form action="<c:url value='/register'/>" method="post" class="account-form">
             <input type="hidden" name="csrf" value="<c:out value='${sessionScope.csrfToken}'/>">
             <div class="form-grid">
@@ -52,8 +49,9 @@
                 <div class="form-field">
                     <label for="phone">Số điện thoại <span class="optional-label">(tùy chọn)</span></label>
                     <input class="form-control" id="phone" name="phone" type="tel"
-                           maxlength="20" autocomplete="tel"
+                           minlength="7" maxlength="20" autocomplete="tel" aria-describedby="phone-help"
                            value="<c:out value='${phone}'/>">
+                    <small id="phone-help">Có thể để trống; nếu nhập, dùng 7–20 ký tự.</small>
                 </div>
                 <div class="form-field">
                     <label for="password">Mật khẩu</label>

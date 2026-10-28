@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import model.Account;
 
 /** Servlet tạo DAO trong từng request và đóng bằng try-with-resources. */
@@ -79,6 +81,29 @@ public class AccountDAO extends DBContext {
             statement.setNString(1, fullName);
             statement.setString(2, phone);
             statement.setInt(3, accountId);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    public List<Account> getAllAccounts() throws SQLException {
+        // Danh sách quản trị không cần đọc hash mật khẩu từ database.
+        String sql = "SELECT AccountID, Username, Email, CAST(NULL AS NVARCHAR(255)) AS PasswordHash, "
+                + "FullName, Phone, Role, IsActive, CreatedAt FROM dbo.UserAccount ORDER BY AccountID";
+        List<Account> accounts = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery()) {
+            while (result.next()) {
+                accounts.add(mapAccount(result));
+            }
+        }
+        return accounts;
+    }
+
+    public boolean updateStatus(int accountId, boolean active) throws SQLException {
+        String sql = "UPDATE dbo.UserAccount SET IsActive = ? WHERE AccountID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, active);
+            statement.setInt(2, accountId);
             return statement.executeUpdate() == 1;
         }
     }

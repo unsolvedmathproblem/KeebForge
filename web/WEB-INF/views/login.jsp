@@ -7,10 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Đăng nhập — KeebForge</title>
-    <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/css/style.css'/>">
+    <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
-<body class="account-page">
+<body class="page-body">
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <main id="main-content" class="container auth-main">
     <section class="auth-intro" aria-labelledby="intro-title">
@@ -23,12 +22,7 @@
         <p class="eyebrow">TÀI KHOẢN KEEBFORGE</p>
         <h2 id="form-title">Đăng nhập</h2>
         <p class="panel-description">Nhập thông tin tài khoản của bạn để tiếp tục.</p>
-        <c:if test="${not empty message}">
-            <div class="notice notice-success" role="status"><c:out value="${message}" /></div>
-        </c:if>
-        <c:if test="${not empty errorMessage}">
-            <div class="notice notice-error" role="alert"><c:out value="${errorMessage}" /></div>
-        </c:if>
+        <jsp:include page="/WEB-INF/views/common/messages.jsp" />
         <form action="<c:url value='/login'/>" method="post" class="account-form">
             <input type="hidden" name="csrf" value="<c:out value='${sessionScope.csrfToken}'/>">
             <div class="form-field">

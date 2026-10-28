@@ -7,21 +7,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hồ sơ của tôi — KeebForge</title>
-    <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/css/style.css'/>">
+    <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
-<body class="account-page">
+<body class="page-body">
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <main id="main-content" class="container profile-main">
     <p class="eyebrow">GÓC CỦA BẠN TẠI KEEBFORGE</p>
     <h1>Hồ sơ của tôi</h1>
     <p class="panel-description">Xem thông tin tài khoản và cập nhật liên hệ của bạn.</p>
-    <c:if test="${not empty message}">
-        <div class="notice notice-success" role="status"><c:out value="${message}" /></div>
-    </c:if>
-    <c:if test="${not empty errorMessage}">
-        <div class="notice notice-error" role="alert"><c:out value="${errorMessage}" /></div>
-    </c:if>
+    <jsp:include page="/WEB-INF/views/common/messages.jsp" />
     <c:if test="${not empty profileAccount}">
         <section class="auth-panel profile-panel" aria-labelledby="profile-title">
             <div class="profile-heading">
@@ -52,7 +46,9 @@
                     <div class="form-field">
                         <label for="phone">Số điện thoại <span class="optional-label">(tùy chọn)</span></label>
                         <input class="form-control" type="tel" id="phone" name="phone"
-                               maxlength="20" autocomplete="tel" value="<c:out value='${phone}'/>">
+                               minlength="7" maxlength="20" autocomplete="tel" aria-describedby="phone-help"
+                               value="<c:out value='${phone}'/>">
+                        <small id="phone-help">Có thể để trống; nếu nhập, dùng 7–20 ký tự.</small>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-workshop">Lưu thay đổi</button>

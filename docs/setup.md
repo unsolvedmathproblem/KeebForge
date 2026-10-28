@@ -1,9 +1,10 @@
-# Chạy KeebForge — P1-01 đến P1-04
+# Chạy KeebForge — P1-01 đến P1-06
 
 Project Java Web with Ant, NetBeans 17, JDK 17, **Tomcat 10.1**
 (Servlet 6 / JSP 3.1 / JSTL 3), SQL Server 2019 trở lên.
-Đã có schema 8 bảng, auth, AuthFilter/CSRF và cập nhật hồ sơ.
-Chưa triển khai quản lý tài khoản Admin hoặc đặt dịch vụ.
+Đã có schema 8 bảng, auth, AuthFilter/CSRF, cập nhật hồ sơ và quản lý tài khoản Admin.
+Chưa triển khai catalog/đặt dịch vụ thuộc P2/P3.
+Hướng dẫn ghép JSP, form, bảng và tiền VND dùng chung: [ui-guide.md](ui-guide.md).
 
 ## Mở và build
 
@@ -82,7 +83,8 @@ Không đưa lỗi SQL/config hoặc mật khẩu lên JSP.
 - `.gitignore`: bỏ qua output build, cấu hình máy và mật khẩu local.
 
 P1-01 tạo DBContext; P1-02 thêm Account/PasswordUtil; P1-03 thêm AccountDAO/AuthServlet,
-tổng cộng 5 class Java ở P1-03. P1-04 thêm AuthFilter, hiện có **6 class Java**;
+tổng cộng 5 class Java ở P1-03. P1-04 thêm AuthFilter, P1-05 thêm AdminUserServlet,
+hiện có **7 class Java**;
 không tạo package/class rỗng cho các bước sau.
 Nav chỉ trỏ đến nội dung đã có.
 `web/index.html` cũ chỉ là trang TODO của NetBeans, đã được thay bằng index.jsp;
@@ -291,8 +293,8 @@ Servlet gọi DAO và không thêm thư viện vào WAR.
 
 - `dao/AccountDAO.java`: SQL PreparedStatement, đọc account theo username/ID,
   kiểm tra username/email đã dùng và insert khách hàng mới. DAO ép role CUSTOMER,
-  IsActive=1 trong SQL. P1-04 đã thêm updateProfile; getAllAccounts/updateStatus
-  vẫn thuộc P1-05.
+  IsActive=1 trong SQL. P1-04 đã thêm updateProfile; P1-05 đã thêm
+  getAllAccounts/updateStatus.
 - `controller/AuthServlet.java`: nhận GET/POST, kiểm tra form, gọi DAO trực tiếp,
   kiểm tra PasswordUtil, quản lý session và forward/redirect.
 - `login.jsp`, `register.jsp`, `profile.jsp` trong WEB-INF/views: hiển thị form,
@@ -428,3 +430,88 @@ quản lý tài khoản/đơn sẽ chỉ thêm khi các trang đó được tri�
   do computer-use không có browser/native pipe khả dụng.
 - Sau kiểm tra đã dừng Tomcat thử, chạy lại Ant clean dist thành công.
   WAR cuối 5.475.488 bytes, 6 class production + 3 JAR, không config local/DLL/SQL/test.
+
+## P1-05 — Quản lý tài khoản Admin
+
+Đăng nhập `admin / Admin@123`, chọn **Tài khoản** trên menu hoặc mở
+`/KeebForge/admin/users`. Trang dùng header/footer/style chung, bảng cuộn ngang
+trên màn hình hẹp; trạng thái có cả màu và chữ.
+
+- `controller/admin/AdminUserServlet.java`: GET danh sách, POST `action=toggle`.
+  Servlet kiểm tra session ADMIN, accountId là số nguyên dương, active chỉ nhận
+  đúng `true` hoặc `false`. Không nhận role/email/password/fullName để cập nhật.
+- `AccountDAO.getAllAccounts()`: List<Account> theo AccountID, map bằng JavaBean
+  đã có. SQL trả NULL thay cho hash trong kết quả danh sách; không lấy hash thật.
+- `AccountDAO.updateStatus(accountId, active)`: chỉ UPDATE IsActive bằng
+  PreparedStatement, kiểm tra affected rows. Không có DELETE hoặc đổi role.
+- `admin/users.jsp`: thông tin liên hệ, vai trò, trạng thái và ngày tham gia;
+  dữ liệu được c:out escape. Mỗi thao tác có csrf, action, accountId và active.
+- Menu **Tài khoản** chỉ có ở ADMIN. AuthFilter vẫn bảo vệ server, nên tự gõ URL
+  hoặc gửi POST từ CUSTOMER đều bị chặn dù có token CSRF của chính họ.
+
+Admin đang đăng nhập không có nút tự khóa; Servlet cũng chặn nếu sửa form thủ công,
+trả 400 và thông báo tiếng Việt. Tài khoản không tồn tại trả 404. Sai ID/action/active
+trả 400. Lỗi DB trả 503; chi tiết chỉ log server. Lưu thành công redirect
+`/admin/users?updated=1` để refresh không gửi lại POST.
+
+`active` là **trạng thái đích**, không phải lệnh đảo BIT. Gửi lại cùng yêu cầu khóa
+vẫn giữ trạng thái khóa, gửi lại mở vẫn giữ trạng thái mở. GET không đổi trạng thái,
+kể cả khi tự thêm query `action=toggle`. Không có action xóa tài khoản.
+
+Khóa tài khoản giữ toàn bộ thông tin/đơn lịch sử. AuthFilter từ P1-04 đọc lại
+IsActive ở request bảo vệ tiếp theo và hủy session của user bị khóa.
+Mở tài khoản cho phép login lại; không tự phục hồi phiên đã bị hủy.
+
+### Kết quả kiểm tra P1-05
+
+- Ant build/deploy Tomcat 10.1.57, Java17 và SQL Server thật: **53 kiểm tra
+  HTTP/SQL đạt**. Admin xem được danh sách; anonymous/customer không truy cập được.
+- Thiếu/sai CSRF không đổi DB; admin không tự khóa bằng form giả; validate ID,
+  action, active và target không tồn tại đúng status/thông báo.
+- Lock/unlock qua chính AdminUserServlet có hiệu lực trong DB và trên session
+  customer đang mở; locked account không login được, unlock thì login lại được.
+- Lặp lại cùng thao tác không đảo ngược trạng thái. Chỉ IsActive đổi, các field
+  còn lại không đổi dù form gửi thêm dữ liệu giả. Action delete bị từ chối;
+  account vẫn tồn tại. Source production không có câu DELETE tài khoản.
+- Tiếng Việt/HTML được escape, phone NULL rõ ràng; HTML không có mật khẩu/hash.
+  Menu đúng role, footer Assignment và ba thành viên giữ nguyên.
+- DB mất kết nối bị chặn an toàn; khôi phục config thì danh sách hoạt động lại.
+  Hết session/đã logout không còn đổi trạng thái được.
+- Đã dọn đúng account thử của lượt này; seed vẫn 3 tài khoản active, không đổi
+  tên/role, đơn vẫn 0. Không tạo/chỉnh schema hoặc database cũ.
+- NetBeans 17 parser: style.css và Bootstrap 5.1.3 đều 0 lỗi. Chưa kiểm tra
+  trực quan desktop/mobile hay Run qua UI NetBeans vì công cụ không khả dụng.
+- Đã dừng Tomcat thử, `ant clean dist` cuối bước thành công; WAR 5.489.816 bytes,
+  7 class + 3 JAR, không config local/DLL/SQL/test. Không thực hiện Git ghi dữ liệu.
+
+## P1-06 — Layout chung và ghép trang
+
+- Header/footer giữ phong cách đã chốt và thông tin nhóm. Thêm common/styles.jsp
+  để nạp hai CSS local một lần, common/messages.jsp cho thông báo thống nhất.
+  Sáu trang home/login/register/profile/admin-users/error dùng cùng khung page-body;
+  không đổi Servlet, DAO hoặc cách gọi database trong bước này.
+- Form vẫn giữ action/method/name/hidden/CSRF, thêm hint liên kết bằng aria-describedby
+  cho phone. Focus bàn phím rõ cho link/nút/vùng bảng. Bảng dùng data-table để P2/P3
+  có thể dùng lại; breakpoint 991px/767px và Bootstrap local được giữ.
+- Thêm WEB-INF/tags/money.tag nhận BigDecimal, fmt locale vi_VN, tiền nguyên đồng,
+  hậu tố ₫. Đang dùng thật ở 3 mức phí công tham khảo trên welcome; chưa thêm
+  ServiceDAO/Servlet/catalog của P2 hoặc model/luồng đơn của P3.
+- `docs/ui-guide.md` có cấu trúc JSP, class CSS, quy ước thông báo/CSRF và ví dụ
+  money.tag cho BigDecimal của P2/P3; không sao chép requirement vào source.
+- **105 kiểm tra render/HTTP đạt** trên /KeebForge và /KeebForge-preview:
+  mỗi trang một shell/CSS, link đúng context, header/footer, active menu, label/hint,
+  JSP/partial/tag được bảo vệ bằng WEB-INF, form đăng ký/login/logout/profile/status,
+  thông báo success/error và escape dữ liệu nhập.
+- Tag được kiểm tra số 0, 2.050.000, BigDecimal 123456789012345678, null và locale
+  JSP cha en_US: kết quả đúng, không mất chữ số với BigDecimal, không đổi locale cha.
+- Hai context được test trên hai Tomcat riêng (loopback 18080/18081) vì DLL Windows
+  auth không nạp được vào hai webapp classloader riêng trong cùng JVM. Không thay
+  loader/JAR/server dùng chung trên máy; chỉ tạo CATALINA_BASE thử trong build.
+- Account test riêng được dọn, seed còn 3 active, không thay schema/dữ liệu cũ.
+- NetBeans 17 CSS parser: style.css và Bootstrap 5.1.3 đều 0 lỗi. Năm form template
+  vẫn có CSRF; production JSP/tag không có SQL/scriptlet nghiệp vụ.
+- Công cụ browser/native pipe không khả dụng: chưa duyệt trực quan desktop/mobile.
+  Kiểm tra render/HTTP/CSS không thay cho việc nhìn bố cục trên trình duyệt.
+- Đã dừng cả hai Tomcat thử, build sạch thành công. WAR cuối 5.491.591 bytes,
+  vẫn 7 class production, có money.tag/styles.jsp/messages.jsp; không test fixture,
+  config thật, DLL hoặc SQL trong WAR. Không thực hiện Git ghi dữ liệu.

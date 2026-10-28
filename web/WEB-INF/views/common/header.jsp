@@ -5,12 +5,13 @@
     <nav class="container nav-shell" aria-label="Điều hướng chính">
         <a class="brand" href="<c:url value='/home'/>"><span class="brand-mark" aria-hidden="true">K.</span> KeebForge<span class="brand-label">WORKSHOP</span></a>
         <div class="nav-links">
-            <a href="<c:url value='/home'/>" aria-current="${empty page ? 'page' : 'false'}">Trang chủ</a>
+            <a href="<c:url value='/home'/>" aria-current="${page eq 'home' ? 'page' : 'false'}">Trang chủ</a>
             <a href="<c:url value='/home'/>#workshop">Về workshop</a>
             <c:choose>
                 <c:when test="${not empty sessionScope.user}">
                     <c:if test="${sessionScope.user.role eq 'ADMIN'}">
                         <span class="account-badge">Quản trị viên</span>
+                        <a href="<c:url value='/admin/users'/>" aria-current="${page eq 'users' ? 'page' : 'false'}">Tài khoản</a>
                     </c:if>
                     <a href="<c:url value='/profile'/>" aria-current="${page eq 'profile' ? 'page' : 'false'}">Hồ sơ</a>
                     <form action="<c:url value='/logout'/>" method="post" class="nav-form">
