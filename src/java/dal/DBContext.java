@@ -32,8 +32,6 @@ public class DBContext implements AutoCloseable {
         }
 
         String url = required(config, "db.url");
-        String username = required(config, "db.user");
-        String password = required(config, "db.password");
         if (!url.startsWith("jdbc:sqlserver://")) {
             throw new SQLException("db.url phải là JDBC URL của SQL Server.");
         }
@@ -44,8 +42,13 @@ public class DBContext implements AutoCloseable {
             throw new SQLException("Thiếu Microsoft JDBC Driver trong WEB-INF/lib.", ex);
         }
         Properties login = new Properties();
-        login.setProperty("user", username);
-        login.setProperty("password", password);
+        if (Boolean.parseBoolean(config.getProperty("db.integratedSecurity", "false"))) {
+            // Tùy chọn local trên Windows: driver cần DLL xác thực cùng phiên bản.
+            login.setProperty("integratedSecurity", "true");
+        } else {
+            login.setProperty("user", required(config, "db.user"));
+            login.setProperty("password", required(config, "db.password"));
+        }
         login.setProperty("loginTimeout", "5");
         connection = DriverManager.getConnection(url, login);
     }

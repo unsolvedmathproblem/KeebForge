@@ -1,0 +1,7 @@
+# Windows Authentication, không cần SQL login/password.
+# Copy thành config/db.properties (local, đã ignore).
+db.url=jdbc:sqlserver://localhost:1433;databaseName=KeebForce_PRJ301;encrypt=true;trustServerCertificate=true
+db.integratedSecurity=true
+# Đặt DLL Microsoft mssql-jdbc_auth-12.8.0.x64.dll trong config/native/.
+# Tomcat Java VM options: -Djava.library.path=D:/source_code/PRJ301/KeebForge/config/native
+# Đặt thêm -Dkeebforge.db.config=D:/source_code/PRJ301/KeebForge/config/db.properties

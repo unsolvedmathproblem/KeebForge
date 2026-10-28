@@ -30,3 +30,4 @@ nbproject/
 
 # Mật khẩu SQL Server chỉ dùng local, không chia sẻ cùng source.
 /config/db.properties
+/config/native/

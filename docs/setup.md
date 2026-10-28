@@ -1,9 +1,9 @@
-# Chạy KeebForge — nền tảng P1-01 và P1-02
+# Chạy KeebForge — P1-01 đến P1-04
 
 Project Java Web with Ant, NetBeans 17, JDK 17, **Tomcat 10.1**
 (Servlet 6 / JSP 3.1 / JSTL 3), SQL Server 2019 trở lên.
-Đã có schema 8 bảng và tài khoản demo trong database ở P1-02.
-Chức năng đăng nhập/đặt dịch vụ chưa được triển khai ở bước này.
+Đã có schema 8 bảng, auth, AuthFilter/CSRF và cập nhật hồ sơ.
+Chưa triển khai quản lý tài khoản Admin hoặc đặt dịch vụ.
 
 ## Mở và build
 
@@ -81,8 +81,9 @@ Không đưa lỗi SQL/config hoặc mật khẩu lên JSP.
   Bàn phím minh họa được vẽ bằng HTML/CSS, không cần file ảnh.
 - `.gitignore`: bỏ qua output build, cấu hình máy và mật khẩu local.
 
-P1-01 tạo DBContext; P1-02 thêm Account và PasswordUtil, tổng cộng **3 class Java**.
-Chưa tạo DAO/Servlet/Filter hay package rỗng để chờ các bước sau.
+P1-01 tạo DBContext; P1-02 thêm Account/PasswordUtil; P1-03 thêm AccountDAO/AuthServlet,
+tổng cộng 5 class Java ở P1-03. P1-04 thêm AuthFilter, hiện có **6 class Java**;
+không tạo package/class rỗng cho các bước sau.
 Nav chỉ trỏ đến nội dung đã có.
 `web/index.html` cũ chỉ là trang TODO của NetBeans, đã được thay bằng index.jsp;
 không có class nghiệp vụ cũ cần chuyển đổi.
@@ -250,3 +251,180 @@ ID không cần liên tiếp: transaction rollback có thể tiêu thụ số ID
   welcome/home và hai CSS trả HTTP 200, tiếng Việt đúng. Đã dừng server thử.
   WAR chỉ có DBContext/Account/PasswordUtil và 3 JAR runtime; không có SQL,
   config thật, DLL hoặc chương trình kiểm tra trong WAR.
+
+## P1-03 — đăng ký, đăng nhập, đăng xuất và hồ sơ chỉ đọc
+
+### Chạy trên máy hiện tại bằng NetBeans 17
+
+Máy hiện tại đã có `config/db.properties` local dùng Windows Authentication
+và DLL Microsoft `config/native/mssql-jdbc_auth-12.8.0.x64.dll` đã kiểm tra chữ ký.
+Hai đường dẫn này được Git ignore; không đóng vào WAR.
+Nếu đã có config SQL login thì giữ nguyên config đó, không cần chuyển sang Windows auth.
+
+Trong NetBeans, mở **Services → Servers → Tomcat 10.1 → Properties → Platform**,
+thêm vào **VM Options** (có thể tên tab/nhãn khác tùy plugin Tomcat):
+
+```text
+-Dkeebforge.db.config=D:/source_code/PRJ301/KeebForge/config/db.properties
+-Djava.library.path=D:/source_code/PRJ301/KeebForge/config/native
+```
+
+Khởi động lại Tomcat, Clean and Build, rồi Run Project.
+VM option `java.library.path` chỉ cần khi dùng Windows Authentication.
+Tài khoản Windows chạy Tomcat phải có quyền dùng database, giống tài khoản
+đã dùng sqlcmd; không tự tạo SQL login hoặc tăng quyền trong các bước triển khai này.
+Chưa tự sửa cấu hình server NetBeans dùng chung; lần chạy thử dùng CATALINA_BASE riêng.
+
+Trên máy khác, chọn một trong hai mẫu:
+
+- **SQL login**: `config/db.properties.example`. Điền SQL login/password thật vào
+  file local, đặt `keebforge.db.config` hoặc KEEBFORGE_DB_CONFIG như phần trên.
+- **Windows Authentication**: `config/db-windows.properties.example`.
+  `db.integratedSecurity=true` sẽ bỏ qua user/password và dùng quyền Windows hiện tại.
+  Tải DLL x64 đúng phiên bản Microsoft JDBC 12.8.0 từ artifact chính thức đã liên kết
+  ở phần P1-02, đặt trong config/native rồi cấu hình java.library.path.
+
+Tùy chọn Windows Authentication là cấu hình bổ sung của DBContext, không đổi cách
+Servlet gọi DAO và không thêm thư viện vào WAR.
+
+### Vai trò file và luồng login
+
+- `dao/AccountDAO.java`: SQL PreparedStatement, đọc account theo username/ID,
+  kiểm tra username/email đã dùng và insert khách hàng mới. DAO ép role CUSTOMER,
+  IsActive=1 trong SQL. P1-04 đã thêm updateProfile; getAllAccounts/updateStatus
+  vẫn thuộc P1-05.
+- `controller/AuthServlet.java`: nhận GET/POST, kiểm tra form, gọi DAO trực tiếp,
+  kiểm tra PasswordUtil, quản lý session và forward/redirect.
+- `login.jsp`, `register.jsp`, `profile.jsp` trong WEB-INF/views: hiển thị form,
+  thông báo và hồ sơ bằng JSTL/EL; dùng c:out cho dữ liệu người dùng.
+- `common/header.jsp`: menu theo trạng thái đăng nhập và nút logout bằng POST;
+  link về phần giới thiệu luôn về đúng /home, kể cả từ trang tài khoản.
+- `web.xml`: session chỉ theo cookie, HttpOnly, không đưa JSESSIONID lên URL.
+- `style.css`: form có label/hint, thông báo lỗi/thành công, profile và responsive.
+  Giữ footer Assignment và tên ba thành viên đã chốt.
+
+Ví dụ `customer1` đăng nhập:
+
+1. Form POST `/login` gửi username/password đến AuthServlet.
+2. Servlet kiểm tra đầu vào, tạo AccountDAO cục bộ trong try-with-resources.
+3. DAO SELECT bằng `WHERE Username = ?`, map ResultSet thành Account.
+4. Servlet dùng PasswordUtil.verifyPassword, kiểm tra active, xóa hash khỏi bean
+   đưa vào session; đổi session ID rồi lưu `session.user = Account`.
+5. Redirect `/profile`; Servlet đọc lại account bằng ID trong session, sau đó
+   forward `profile.jsp`. JSP chỉ hiển thị dữ liệu, không tự query DB.
+
+Tài khoản demo: `admin / Admin@123`, `customer1 / Customer@123`,
+`customer2 / Customer@123`. Admin và Customer hiện đều vào hồ sơ;
+trang quản trị và đơn sẽ được thêm theo các bước sau.
+
+### Quy tắc form và route hiện có
+
+- Username đăng ký: 3–50 ký tự `[A-Za-z0-9_]`; email tối đa 100 ký tự;
+  fullName bắt buộc, tối đa 100; phone có thể bỏ trống hoặc 7–20 ký tự gồm
+  số/dấu điện thoại thông dụng; mật khẩu 8–128 ký tự và nhập lại phải khớp.
+- Trim các thông tin chữ; không trim mật khẩu. Chỉ giữ username/email/fullName/phone
+  khi form lỗi, không đổ password/confirmPassword vào HTML.
+- Register không nhận role/active/accountId từ browser. UNIQUE trong DB bảo vệ
+  request đồng thời; lỗi trùng trả thông báo tiếng Việt. Thành công redirect về
+  `/login?registered=1`, không tự đăng nhập.
+- Login thành công đổi session ID, session key `user`, không lưu passwordHash
+  trong session. Sai thông tin trả lỗi chung; tài khoản active=false không được login.
+- GET `/profile` cần user trong session, lấy lại account bằng ID đó;
+  `?accountId=...` không đổi chủ hồ sơ. Account bị khóa/không còn thì hủy session.
+- POST `/logout` invalidate session rồi redirect login. GET `/logout` trả 405.
+- Ở mốc P1-03, POST `/profile` trả 405; P1-04 bên dưới đã thêm action=update.
+- Response tài khoản có Cache-Control: no-store. Lỗi kết nối/SQL trả 503 và
+  thông báo chung tiếng Việt, chi tiết chỉ log phía server.
+- Mốc P1-03 chưa có AuthFilter/CSRF và profile update; phần P1-04 dưới đây
+  ghi kết quả triển khai các chức năng này.
+
+### Kết quả kiểm tra P1-03
+
+- Ant build/deploy Tomcat 10.1.57 + JDK17 + SQL Server thật, cấu hình Windows auth
+  local. Đã kiểm tra qua chính AuthServlet → AccountDAO → DBContext, không chỉ
+  chương trình JDBC console.
+- **55 kiểm tra HTTP/SQL đạt**: trang public/JSP WEB-INF, validate server,
+  form giữ giá trị an toàn, login đúng/sai/user không có, cả ba seed account,
+  hash đăng ký, khóa/mở account thử, session ID/HttpOnly/logout/owner,
+  HTML injection và hai request register trùng đồng thời.
+- Giả lập mất kết nối bằng config riêng của server thử: UI trả 503 tiếng Việt,
+  không stack trace/JDBC URL; khôi phục config thì login lại được.
+- Tài khoản tạo bởi bộ kiểm tra được xóa đúng username/email riêng; dữ liệu seed
+  vẫn 3 account active, đơn vẫn 0. Không đổi schema hoặc database cũ.
+- NetBeans 17 CSS parser: style.css và Bootstrap 5.1.3 đều 0 lỗi parser.
+- Chưa kiểm tra bố cục trực quan desktop/mobile: computer-use không có browser
+  và native pipe không khả dụng. Chưa thực hiện Run qua UI NetBeans.
+- Bản cuối `ant clean dist` thành công, WAR 5.464.542 bytes, đã deploy và kiểm tra
+  lại login/profile/menu/logout/register từ chính WAR vừa build. Server thử đã dừng.
+  WAR có đúng 5 class production và 3 JAR, không chứa config local/DLL/SQL/harness.
+
+## P1-04 — Filter, CSRF và cập nhật hồ sơ
+
+`filter/AuthFilter.java` là một filter duy nhất map `/*`, mặc định chỉ chạy
+ở request từ trình duyệt, không chạy lặp khi Servlet forward/include JSP.
+Filter đặt UTF-8 trước khi đọc form và xử lý theo thứ tự:
+
+1. GET/HEAD tới `/css/`, `/js/`, `/images/`, favicon đi thẳng tới tài nguyên,
+   không tạo session hoặc truy vấn DB.
+2. Các request khác dùng token ngẫu nhiên 32 byte ở `session.csrfToken`.
+   Mọi form POST gửi hidden input tên `csrf`. Response trang đặt no-store.
+3. `/profile` cần login; `/request`, `/orders` chỉ CUSTOMER;
+   `/admin` và `/admin/*` chỉ ADMIN. Filter lấy lại Account từ DB trước mỗi
+   request bảo vệ, cập nhật role/session và bỏ hash khỏi bean trong session.
+4. User không login được redirect `/login`; account không còn/đã khóa thì hủy
+   session. Sai role hoặc token CSRF trả 403. DB không truy cập được thì trả 503,
+   không cho request bảo vệ tiếp tục với dữ liệu session cũ.
+5. Token POST được so sánh bằng MessageDigest.isEqual. Token ổn định trong cùng
+   session để dùng ở nhiều form/tab; sau login token cũ bị bỏ, GET tiếp theo tạo
+   token mới. Logout hủy session nên token cũ không còn dùng được.
+
+Form JSP về sau của P2/P3 chỉ cần thêm:
+
+```jsp
+<input type="hidden" name="csrf" value="<c:out value='${sessionScope.csrfToken}'/>">
+```
+
+Không tự tạo token CSRF thứ hai trong Servlet/helper. CSRF không thay cho token
+chống gửi đơn trùng của P3. Khi không còn session, POST tới route bảo vệ bị
+redirect login trước khi xử lý form; POST public có token cũ/không token trả 403.
+
+`common/error.jsp` là trang thực dùng cho lỗi Filter, có thông báo tiếng Việt,
+header/footer chung và link về home; không hiển thị stack trace hoặc dữ liệu SQL.
+Menu hiện có profile/logout cho user, nhãn Quản trị viên cho ADMIN; link tới
+quản lý tài khoản/đơn sẽ chỉ thêm khi các trang đó được triển khai.
+
+### Sửa hồ sơ
+
+- `AccountDAO.updateProfile(accountId, fullName, phone)` dùng UPDATE chỉ hai cột
+  FullName/Phone, WHERE AccountID và IsActive=1, kiểm tra số dòng cập nhật.
+- `AuthServlet` nhận POST `/profile`, `action=update`. AccountID lấy từ session;
+  bỏ qua các giá trị accountId/role/email/password/active do browser tự gửi.
+- Họ tên bắt buộc, tối đa 100 ký tự; phone có thể trống hoặc phải theo cùng
+  quy tắc đăng ký. Phone trống lưu NULL. Mọi giá trị chữ được trim.
+- Lỗi form giữ lại giá trị và escape khi hiển thị; không đổi Account trong session
+  trước khi SQL thành công. Thành công cập nhật session rồi redirect
+  `/profile?updated=1`; GET tiếp theo hiển thị thông báo và dữ liệu mới từ Filter.
+- AuthFilter đã đọc lại account nên GET profile không query DB lần thứ hai.
+- GET `/logout` vẫn trả 405. POST logout cần CSRF hợp lệ.
+
+### Kết quả kiểm tra P1-04
+
+- Ant build/deploy thật trên Tomcat 10.1.57, JDK17 và SQL Server local.
+- **76 kiểm tra HTTP/SQL đạt**: login/register regression với CSRF; token
+  thiếu/sai/khác session/cũ sau login và logout; role/customer/admin; account
+  bị khóa và role đổi có hiệu lực ở request bảo vệ kế tiếp; sửa hồ sơ tiếng Việt,
+  NULL phone, validate và escape HTML; IDOR/tamper accountId/role/email/password.
+- Kiểm tra cookie phiên đã bị hủy/phát lại để mô phỏng session không còn hợp lệ;
+  chưa đợi đủ 30 phút để kiểm tra timeout tự nhiên.
+- Đã kiểm tra trực tiếp /admin và /admin/users, gồm path có dấu `;`: CUSTOMER
+  nhận 403. ADMIN đi qua Filter và nhận 404 vì chức năng Admin chưa làm ở P1-05.
+  Tương tự CUSTOMER được đi qua Filter /request,/orders nhưng chức năng P3 chưa có.
+- Giả lập DB mất kết nối: protected route trả 503, trang login/static vẫn mở;
+  khôi phục DB thì profile hoạt động lại.
+- Các tài khoản test được dọn đúng username/email, 3 account seed vẫn active,
+  tên/role không đổi, đơn vẫn 0. Không thay schema/database cũ.
+- Cả bốn form hiện có đều chứa csrf. NetBeans 17 parser: style.css và Bootstrap
+  5.1.3 đều 0 lỗi. Chưa kiểm tra trực quan desktop/mobile hoặc Run qua UI NetBeans
+  do computer-use không có browser/native pipe khả dụng.
+- Sau kiểm tra đã dừng Tomcat thử, chạy lại Ant clean dist thành công.
+  WAR cuối 5.475.488 bytes, 6 class production + 3 JAR, không config local/DLL/SQL/test.
