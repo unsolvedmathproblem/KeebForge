@@ -1,10 +1,14 @@
-# Chạy KeebForge — P1-01 đến P1-06
+# Chạy KeebForge — P1-01 đến P1-07
+
+**P1 đã được người dùng nghiệm thu và kết thúc ngày 28/10/2026.**
+Hướng dẫn dưới đây phục vụ bàn giao/chạy lại; chưa bao gồm triển khai P2/P3.
 
 Project Java Web with Ant, NetBeans 17, JDK 17, **Tomcat 10.1**
 (Servlet 6 / JSP 3.1 / JSTL 3), SQL Server 2019 trở lên.
 Đã có schema 8 bảng, auth, AuthFilter/CSRF, cập nhật hồ sơ và quản lý tài khoản Admin.
 Chưa triển khai catalog/đặt dịch vụ thuộc P2/P3.
 Hướng dẫn ghép JSP, form, bảng và tiền VND dùng chung: [ui-guide.md](ui-guide.md).
+Kiểm tra cuối và artifact bàn giao: [handover-p1.md](handover-p1.md).
 
 ## Mở và build
 
@@ -49,16 +53,17 @@ JSTL theo [artifact chính thức trên Central](https://central.sonatype.com/ar
 
 ## Cấu hình SQL Server local
 
-1. Tạo `config/db.properties` từ `config/db.properties.example` và điền
-   SQL login/password của máy bạn. File thật đã được bỏ qua trong `.gitignore`.
-   Không đặt config thật trong `src`, `web`, `WEB-INF/classes` hoặc WAR.
+1. Copy mẫu SQL login `config/db.properties.example` hoặc mẫu Windows auth
+   `config/db-windows.properties.example` thành **TOMCAT_BASE/conf/keebforge-db.properties**.
+   Điền giá trị của máy bạn vào file đó, không đặt config thật trong source/web/WAR.
 2. Cấu hình TCP/IP và port SQL Server theo máy bạn. Mẫu dùng localhost:1433,
    database mới `KeebForce_PRJ301`; xem các script **P1-02** bên dưới.
    Không chạy script thay schema database cũ.
-3. Đặt biến môi trường `KEEBFORGE_DB_CONFIG` bằng đường dẫn tuyệt đối đến file
-   thật, trước khi khởi động NetBeans/Tomcat. Hoặc thêm Java VM option cho
-   Tomcat: `-Dkeebforge.db.config=D:/source_code/PRJ301/KeebForge/config/db.properties`.
-   System property được ưu tiên nếu có cả hai. Khởi động lại server sau khi đổi.
+3. DBContext tự tìm file trong conf của Tomcat đang chạy. Thứ tự ưu tiên:
+   system property `keebforge.db.config` → env `KEEBFORGE_DB_CONFIG` →
+   `${catalina.base}/conf/keebforge-db.properties`. Hai tùy chọn đầu chỉ cần khi
+   muốn dùng vị trí khác hoặc chạy chương trình console ngoài Tomcat.
+   File `config/db.properties` local cũ vẫn dùng được nếu chỉ định đường dẫn rõ.
 4. Mẫu bật TLS với `trustServerCertificate=true` để làm bài local bằng chứng chỉ
    tự ký; khi dùng chứng chỉ hợp lệ thì chuyển thành `false`.
 
@@ -258,33 +263,29 @@ ID không cần liên tiếp: transaction rollback có thể tiêu thụ số ID
 
 ### Chạy trên máy hiện tại bằng NetBeans 17
 
-Máy hiện tại đã có `config/db.properties` local dùng Windows Authentication
-và DLL Microsoft `config/native/mssql-jdbc_auth-12.8.0.x64.dll` đã kiểm tra chữ ký.
-Hai đường dẫn này được Git ignore; không đóng vào WAR.
-Nếu đã có config SQL login thì giữ nguyên config đó, không cần chuyển sang Windows auth.
+Đã sửa cấu hình của đúng Tomcat NetBeans hiện tại tại `D:/apache-tomcat-10.1.57`:
 
-Trong NetBeans, mở **Services → Servers → Tomcat 10.1 → Properties → Platform**,
-thêm vào **VM Options** (có thể tên tab/nhãn khác tùy plugin Tomcat):
+- `conf/keebforge-db.properties`: Windows auth, database KeebForce_PRJ301.
+- `conf/keebforge-native/mssql-jdbc_auth-12.8.0.x64.dll`: DLL Microsoft ký hợp lệ.
+- `bin/setenv.bat`: đặt java.library.path tới thư mục DLL trên, được catalina.bat
+  gọi tự động khi NetBeans/CLI khởi động server.
 
-```text
--Dkeebforge.db.config=D:/source_code/PRJ301/KeebForge/config/db.properties
--Djava.library.path=D:/source_code/PRJ301/KeebForge/config/native
-```
+DBContext tự đọc file trong conf. Máy này không còn cần nhập VM Option đường dẫn DB
+bằng tay. Dừng/khởi động lại Tomcat khi bổ sung setenv/DLL lần đầu.
+Không đóng config thật/DLL local vào Git, source ZIP hoặc WAR.
 
-Khởi động lại Tomcat, Clean and Build, rồi Run Project.
-VM option `java.library.path` chỉ cần khi dùng Windows Authentication.
-Tài khoản Windows chạy Tomcat phải có quyền dùng database, giống tài khoản
-đã dùng sqlcmd; không tự tạo SQL login hoặc tăng quyền trong các bước triển khai này.
-Chưa tự sửa cấu hình server NetBeans dùng chung; lần chạy thử dùng CATALINA_BASE riêng.
+Trên máy khác:
 
-Trên máy khác, chọn một trong hai mẫu:
-
-- **SQL login**: `config/db.properties.example`. Điền SQL login/password thật vào
-  file local, đặt `keebforge.db.config` hoặc KEEBFORGE_DB_CONFIG như phần trên.
-- **Windows Authentication**: `config/db-windows.properties.example`.
-  `db.integratedSecurity=true` sẽ bỏ qua user/password và dùng quyền Windows hiện tại.
-  Tải DLL x64 đúng phiên bản Microsoft JDBC 12.8.0 từ artifact chính thức đã liên kết
-  ở phần P1-02, đặt trong config/native rồi cấu hình java.library.path.
+- **SQL login**: copy mẫu SQL vào conf/keebforge-db.properties và điền login/password.
+  Không cần DLL hoặc setenv dành cho Windows auth.
+- **Windows auth**: copy mẫu Windows vào conf/keebforge-db.properties, đặt DLL x64
+  đúng 12.8.0 vào TOMCAT_HOME/conf/keebforge-native, copy setenv.bat.example vào
+  TOMCAT_HOME/bin/setenv.bat. Nếu file setenv đã có thì giữ các setting cũ, chỉ thêm
+  setting cần thiết. Đường dẫn có khoảng trắng cần đặt trong dấu ngoặc kép phù hợp.
+- Tài khoản Windows chạy Tomcat cần quyền dùng DB như khi chạy sqlcmd. Không tạo
+  SQL login hoặc tăng quyền server trong lần sửa này.
+- Nếu muốn giữ cách VM Options cũ, keebforge.db.config vẫn được ưu tiên hơn file conf;
+  kiểm tra/bỏ giá trị cũ sai đường dẫn nếu server vẫn báo không đọc được config.
 
 Tùy chọn Windows Authentication là cấu hình bổ sung của DBContext, không đổi cách
 Servlet gọi DAO và không thêm thư viện vào WAR.
@@ -515,3 +516,29 @@ Mở tài khoản cho phép login lại; không tự phục hồi phiên đã b�
 - Đã dừng cả hai Tomcat thử, build sạch thành công. WAR cuối 5.491.591 bytes,
   vẫn 7 class production, có money.tag/styles.jsp/messages.jsp; không test fixture,
   config thật, DLL hoặc SQL trong WAR. Không thực hiện Git ghi dữ liệu.
+
+## Sửa lỗi đăng ký trên Tomcat NetBeans và dọn DB cũ
+
+Log thật ở Tomcat cổng 8080 ghi SQLException: chưa cấu hình keebforge.db.config
+hoặc KEEBFORGE_DB_CONFIG. DB chính đã có đủ 8 bảng; việc thiếu cấu hình server
+là nguyên nhân của lỗi đăng ký, không phải cần tạo lại database.
+
+Đã thêm vị trí config mặc định trong DBContext như hướng dẫn trên và cấu hình
+Windows auth của đúng server NetBeans. Mở lại http://localhost:8080/KeebForge/register
+để đăng ký. Đã chạy 18 kiểm tra HTTP/SQL trên cổng 8080, gồm đăng ký/lưu Unicode/hash,
+trùng tài khoản, login/profile/update, CSRF/quyền, Admin list/lock/unlock/logout;
+tất cả đạt. Không chỉ kiểm tra trên Tomcat tạm như các mốc đầu.
+
+Theo yêu cầu dọn DB thừa của người dùng, đã giữ KeebForce_PRJ301 và xóa hai DB schema
+cũ KeebForgeDB, KeebForge_P102_Verify sau COPY_ONLY/CHECKSUM và RESTORE VERIFYONLY.
+Không tìm thấy source hiện tại trỏ tới hai DB cũ hoặc phiên SQL đang dùng chúng.
+Backup tại thư mục SQL Server:
+
+```text
+C:\Program Files\Microsoft SQL Server\MSSQL17.MSSQLSERVER\MSSQL\Backup
+KeebForgeDB_before_cleanup_20261028_210938.bak
+KeebForge_P102_Verify_before_cleanup_20261028_210938.bak
+```
+
+Không sửa script để tự DROP/reset DB khi chạy app. Giữ dữ liệu seed/DB chính,
+không chạy lại script 01–03 trên DB đã có. Account thử đã dọn, seed vẫn 3 active.

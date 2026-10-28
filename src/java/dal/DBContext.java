@@ -21,6 +21,13 @@ public class DBContext implements AutoCloseable {
             configPath = System.getenv("KEEBFORGE_DB_CONFIG");
         }
         if (configPath == null || configPath.isBlank()) {
+            // NetBeans/Tomcat: đọc file local theo vị trí cố định, không cần VM Option.
+            String tomcatBase = System.getProperty("catalina.base");
+            if (tomcatBase != null && !tomcatBase.isBlank()) {
+                configPath = Path.of(tomcatBase, "conf", "keebforge-db.properties").toString();
+            }
+        }
+        if (configPath == null || configPath.isBlank()) {
             throw new SQLException("Chưa cấu hình đường dẫn file DB: keebforge.db.config hoặc KEEBFORGE_DB_CONFIG.");
         }
 

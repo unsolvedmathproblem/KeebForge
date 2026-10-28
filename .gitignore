@@ -11,7 +11,6 @@ nbdist/
 nbproject/private/
 nbproject/Makefile-*.properties
 nbproject/configs/
-nbproject/build-impl.xml
 
 # 3. Bỏ qua các thư mục của IDE khác (phòng trường hợp thành viên khác dùng VS Code/IntelliJ)
 .vscode/
@@ -25,8 +24,6 @@ ehthumbs.db
 
 # 5. Bỏ qua file log
 *.log
-
-nbproject/
 
 # Mật khẩu SQL Server chỉ dùng local, không chia sẻ cùng source.
 /config/db.properties

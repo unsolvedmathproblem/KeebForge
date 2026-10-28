@@ -1,4 +1,5 @@
-# File UTF-8. Tạo db.properties local, KHÔNG đóng gói file thật vào WAR.
+# File UTF-8. Copy thành TOMCAT_BASE/conf/keebforge-db.properties.
+# File thật nằm ngoài WAR. CLI có thể dùng -Dkeebforge.db.config để chọn file khác.
 # Database riêng cho requirement mới, tạo bằng các script trong database/.
 db.url=jdbc:sqlserver://localhost:1433;databaseName=KeebForce_PRJ301;encrypt=true;trustServerCertificate=true
 db.user=your_sql_login
