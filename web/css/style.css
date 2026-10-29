@@ -116,7 +116,9 @@ h3 {
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px 24px;
     align-items: center;
     font-size: .875rem;
     font-weight: 600
@@ -810,7 +812,339 @@ h3 {
     background: #edf6ed;
 }
 
+.catalog-filter-panel {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 28px;
+}
+
+.catalog-filter-form {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr auto;
+    gap: 16px;
+    align-items: end;
+}
+
+.catalog-filter-form .form-field {
+    margin-bottom: 0;
+}
+
+.catalog-filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.catalog-filter-actions .btn-workshop {
+    min-height: 46px;
+    white-space: nowrap;
+}
+
+.catalog-reset-link {
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.catalog-reset-link:hover {
+    color: var(--orange);
+    border-color: var(--orange);
+}
+
+.catalog-grid {
+    margin-bottom: 32px;
+}
+
+.part-card {
+    padding: 20px;
+}
+
+.part-image-wrap {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: #e9ece2;
+    margin-bottom: 16px;
+    height: 180px;
+}
+
+.part-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.part-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.part-brand {
+    font-size: .75rem;
+    font-weight: 650;
+    color: var(--muted);
+}
+
+.catalog-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.page-link-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--white);
+    font-size: .85rem;
+    font-weight: 650;
+    color: var(--ink);
+}
+
+.page-link-item:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+}
+
+.page-link-active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+}
+
+.page-link-active:hover {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.service-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.service-card-selected {
+    border-color: var(--green);
+    box-shadow: 0 0 0 2px rgba(49, 89, 70, .14);
+}
+
+.service-reviews-panel {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-top: 8px;
+}
+
+.review-list {
+    display: grid;
+    gap: 16px;
+}
+
+.review-item {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    background: var(--paper);
+}
+
+.review-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin-bottom: 8px;
+}
+
+.review-rating {
+    color: var(--orange);
+    font-weight: 700;
+    font-size: .9rem;
+}
+
+.review-comment {
+    margin: 0;
+    font-size: .9rem;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
+.admin-heading-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    background: #e9ece2;
+    flex-shrink: 0;
+}
+
+.admin-row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-row-actions form {
+    margin: 0;
+}
+
+.admin-action-link {
+    white-space: nowrap;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--ink);
+    background: var(--paper);
+}
+
+.admin-action-link:hover {
+    color: var(--orange);
+    border-color: var(--orange);
+}
+
+.admin-textarea {
+    min-height: 112px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    resize: vertical;
+}
+
+.admin-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.admin-inline-panel {
+    margin-bottom: 28px;
+}
+
+.admin-row-editing td {
+    background: #edf6ed;
+}
+
+.pagination-summary {
+    text-align: center;
+    font-size: .82rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.review-summary-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.review-average-badge {
+    color: #8f3d1e;
+    background: #fff1ed;
+}
+
+.review-service-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.review-tab-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper);
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.review-tab-pill:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+}
+
+.review-tab-active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+}
+
+.review-tab-active:hover {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+}
+
+.review-tab-clear {
+    color: var(--muted);
+    background: transparent;
+}
+
+.btn:focus-visible,
+.form-control:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 2px;
+}
+
 @media(max-width:991px) {
+    .catalog-filter-form {
+        grid-template-columns: 1fr 1fr;
+    }
     .nav-shell {
         flex-wrap: wrap;
         padding-top: 16px;
@@ -936,6 +1270,22 @@ h3 {
     .profile-grid {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+    .catalog-filter-form {
+        grid-template-columns: 1fr;
+    }
+    .catalog-filter-actions {
+        flex-wrap: wrap;
+    }
+    .service-reviews-panel {
+        padding: 22px 20px;
+    }
+    .admin-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .admin-heading-actions {
+        width: 100%;
     }
 }
 
