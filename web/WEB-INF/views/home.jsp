@@ -8,8 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KeebForge — workshop lắp ráp, vệ sinh và chăm sóc bàn phím cơ theo nhu cầu của bạn.">
-    <title>KeebForge — Chăm chút từng phím</title>
+    <meta name="description" content="KeebForce — workshop lắp ráp, vệ sinh và chăm sóc bàn phím cơ theo nhu cầu của bạn.">
+    <title>KeebForce — Chăm chút từng phím</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
 <body class="page-body">

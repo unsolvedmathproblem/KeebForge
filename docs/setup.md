@@ -1,4 +1,4 @@
-# Chạy KeebForge — P1-01 đến P1-07
+# Chạy KeebForce — P1-01 đến P1-07
 
 **P1 đã được người dùng nghiệm thu và kết thúc ngày 28/10/2026.**
 Hướng dẫn dưới đây phục vụ bàn giao/chạy lại; chưa bao gồm triển khai P2/P3.
@@ -12,15 +12,15 @@ Kiểm tra cuối và artifact bàn giao: [handover-p1.md](handover-p1.md).
 
 ## Mở và build
 
-1. NetBeans 17 → Open Project → chọn thư mục KeebForge.
+1. NetBeans 17 → Open Project → chọn thư mục KeebForce.
 2. Project Properties → Libraries/Java Platform: JDK 17.
 3. Project Properties → Run → chọn Tomcat 10.1 đã đăng ký ở máy bạn,
-   context path `/KeebForge`. Các đường dẫn server local nằm trong
+   context path `/KeebForce`. Các đường dẫn server local nằm trong
    `nbproject/private`, không chia sẻ cùng source.
 4. Clean and Build hoặc chạy `ant clean dist` khi Ant có trong PATH.
-   WAR tạo tại `dist/KeebForge.war`.
+   WAR tạo tại `dist/KeebForce.war`.
 5. Run Project hoặc deploy WAR vào Tomcat 10.1, mở
-   `http://localhost:8080/KeebForge/`. Trang gốc redirect đến `/home`.
+   `http://localhost:8080/KeebForce/`. Trang gốc redirect đến `/home`.
 
 Máy hiện tại có Ant tại
 `C:\Program Files\NetBeans-17\netbeans\extide\ant\bin\ant.bat`.
@@ -54,14 +54,14 @@ JSTL theo [artifact chính thức trên Central](https://central.sonatype.com/ar
 ## Cấu hình SQL Server local
 
 1. Copy mẫu SQL login `config/db.properties.example` hoặc mẫu Windows auth
-   `config/db-windows.properties.example` thành **TOMCAT_BASE/conf/keebforge-db.properties**.
+   `config/db-windows.properties.example` thành **TOMCAT_BASE/conf/keebforce-db.properties**.
    Điền giá trị của máy bạn vào file đó, không đặt config thật trong source/web/WAR.
 2. Cấu hình TCP/IP và port SQL Server theo máy bạn. Mẫu dùng localhost:1433,
    database mới `KeebForce_PRJ301`; xem các script **P1-02** bên dưới.
    Không chạy script thay schema database cũ.
 3. DBContext tự tìm file trong conf của Tomcat đang chạy. Thứ tự ưu tiên:
-   system property `keebforge.db.config` → env `KEEBFORGE_DB_CONFIG` →
-   `${catalina.base}/conf/keebforge-db.properties`. Hai tùy chọn đầu chỉ cần khi
+   system property `keebforce.db.config` → env `KEEBFORCE_DB_CONFIG` →
+   `${catalina.base}/conf/keebforce-db.properties`. Hai tùy chọn đầu chỉ cần khi
    muốn dùng vị trí khác hoặc chạy chương trình console ngoài Tomcat.
    File `config/db.properties` local cũ vẫn dùng được nếu chỉ định đường dẫn rõ.
 4. Mẫu bật TLS với `trustServerCertificate=true` để làm bài local bằng chứng chỉ
@@ -101,7 +101,7 @@ không có class nghiệp vụ cũ cần chuyển đổi.
 - WAR chỉ có DBContext và ba JAR nêu trên; không có Servlet API hoặc config thật.
 - Deploy thử WAR trên Tomcat 10.1.57 với CATALINA_BASE riêng trong `build/tomcat`;
   không thay cấu hình cài đặt Tomcat dùng chung.
-- `/KeebForge/`, `/KeebForge/home`, hai file CSS: HTTP 200; HTML UTF-8 có tiếng Việt,
+- `/KeebForce/`, `/KeebForce/home`, hai file CSS: HTTP 200; HTML UTF-8 có tiếng Việt,
   JSTL được xử lý; JSP trong WEB-INF trả 404 khi truy cập trực tiếp.
 - DBContext: thiếu đường dẫn cấu hình ném SQLException như dự kiến.
 - SQL Server local: `sqlcmd -S tcp:localhost,1433 -E -C` chạy SELECT được;
@@ -265,8 +265,8 @@ ID không cần liên tiếp: transaction rollback có thể tiêu thụ số ID
 
 Đã sửa cấu hình của đúng Tomcat NetBeans hiện tại tại `D:/apache-tomcat-10.1.57`:
 
-- `conf/keebforge-db.properties`: Windows auth, database KeebForce_PRJ301.
-- `conf/keebforge-native/mssql-jdbc_auth-12.8.0.x64.dll`: DLL Microsoft ký hợp lệ.
+- `conf/keebforce-db.properties`: Windows auth, database KeebForce_PRJ301.
+- `conf/keebforce-native/mssql-jdbc_auth-12.8.0.x64.dll`: DLL Microsoft ký hợp lệ.
 - `bin/setenv.bat`: đặt java.library.path tới thư mục DLL trên, được catalina.bat
   gọi tự động khi NetBeans/CLI khởi động server.
 
@@ -276,15 +276,15 @@ Không đóng config thật/DLL local vào Git, source ZIP hoặc WAR.
 
 Trên máy khác:
 
-- **SQL login**: copy mẫu SQL vào conf/keebforge-db.properties và điền login/password.
+- **SQL login**: copy mẫu SQL vào conf/keebforce-db.properties và điền login/password.
   Không cần DLL hoặc setenv dành cho Windows auth.
-- **Windows auth**: copy mẫu Windows vào conf/keebforge-db.properties, đặt DLL x64
-  đúng 12.8.0 vào TOMCAT_HOME/conf/keebforge-native, copy setenv.bat.example vào
+- **Windows auth**: copy mẫu Windows vào conf/keebforce-db.properties, đặt DLL x64
+  đúng 12.8.0 vào TOMCAT_HOME/conf/keebforce-native, copy setenv.bat.example vào
   TOMCAT_HOME/bin/setenv.bat. Nếu file setenv đã có thì giữ các setting cũ, chỉ thêm
   setting cần thiết. Đường dẫn có khoảng trắng cần đặt trong dấu ngoặc kép phù hợp.
 - Tài khoản Windows chạy Tomcat cần quyền dùng DB như khi chạy sqlcmd. Không tạo
   SQL login hoặc tăng quyền server trong lần sửa này.
-- Nếu muốn giữ cách VM Options cũ, keebforge.db.config vẫn được ưu tiên hơn file conf;
+- Nếu muốn giữ cách VM Options cũ, keebforce.db.config vẫn được ưu tiên hơn file conf;
   kiểm tra/bỏ giá trị cũ sai đường dẫn nếu server vẫn báo không đọc được config.
 
 Tùy chọn Windows Authentication là cấu hình bổ sung của DBContext, không đổi cách
@@ -435,7 +435,7 @@ quản lý tài khoản/đơn sẽ chỉ thêm khi các trang đó được tri�
 ## P1-05 — Quản lý tài khoản Admin
 
 Đăng nhập `admin / Admin@123`, chọn **Tài khoản** trên menu hoặc mở
-`/KeebForge/admin/users`. Trang dùng header/footer/style chung, bảng cuộn ngang
+`/KeebForce/admin/users`. Trang dùng header/footer/style chung, bảng cuộn ngang
 trên màn hình hẹp; trạng thái có cả màu và chữ.
 
 - `controller/admin/AdminUserServlet.java`: GET danh sách, POST `action=toggle`.
@@ -499,7 +499,7 @@ Mở tài khoản cho phép login lại; không tự phục hồi phiên đã b�
   ServiceDAO/Servlet/catalog của P2 hoặc model/luồng đơn của P3.
 - `docs/ui-guide.md` có cấu trúc JSP, class CSS, quy ước thông báo/CSRF và ví dụ
   money.tag cho BigDecimal của P2/P3; không sao chép requirement vào source.
-- **105 kiểm tra render/HTTP đạt** trên /KeebForge và /KeebForge-preview:
+- **105 kiểm tra render/HTTP đạt** trên /KeebForce và /KeebForce-preview:
   mỗi trang một shell/CSS, link đúng context, header/footer, active menu, label/hint,
   JSP/partial/tag được bảo vệ bằng WEB-INF, form đăng ký/login/logout/profile/status,
   thông báo success/error và escape dữ liệu nhập.
@@ -519,12 +519,12 @@ Mở tài khoản cho phép login lại; không tự phục hồi phiên đã b�
 
 ## Sửa lỗi đăng ký trên Tomcat NetBeans và dọn DB cũ
 
-Log thật ở Tomcat cổng 8080 ghi SQLException: chưa cấu hình keebforge.db.config
-hoặc KEEBFORGE_DB_CONFIG. DB chính đã có đủ 8 bảng; việc thiếu cấu hình server
+Log thật ở Tomcat cổng 8080 ghi SQLException: chưa cấu hình keebforce.db.config
+hoặc KEEBFORCE_DB_CONFIG. DB chính đã có đủ 8 bảng; việc thiếu cấu hình server
 là nguyên nhân của lỗi đăng ký, không phải cần tạo lại database.
 
 Đã thêm vị trí config mặc định trong DBContext như hướng dẫn trên và cấu hình
-Windows auth của đúng server NetBeans. Mở lại http://localhost:8080/KeebForge/register
+Windows auth của đúng server NetBeans. Mở lại http://localhost:8080/KeebForce/register
 để đăng ký. Đã chạy 18 kiểm tra HTTP/SQL trên cổng 8080, gồm đăng ký/lưu Unicode/hash,
 trùng tài khoản, login/profile/update, CSRF/quyền, Admin list/lock/unlock/logout;
 tất cả đạt. Không chỉ kiểm tra trên Tomcat tạm như các mốc đầu.

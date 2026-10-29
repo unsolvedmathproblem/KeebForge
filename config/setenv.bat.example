@@ -1,4 +1,4 @@
 @echo off
 rem Copy to TOMCAT_HOME\bin\setenv.bat when using Windows Authentication.
 rem Keep any existing setenv.bat settings; append this line rather than overwrite them.
-set "CATALINA_OPTS=%CATALINA_OPTS% -Djava.library.path=%CATALINA_HOME%/conf/keebforge-native"
+set "CATALINA_OPTS=%CATALINA_OPTS% -Djava.library.path=%CATALINA_HOME%/conf/keebforce-native"
