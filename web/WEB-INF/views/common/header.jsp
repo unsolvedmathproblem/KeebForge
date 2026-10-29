@@ -6,7 +6,10 @@
         <a class="brand" href="<c:url value='/home'/>"><span class="brand-mark" aria-hidden="true">K.</span> KeebForge<span class="brand-label">WORKSHOP</span></a>
         <div class="nav-links">
             <a href="<c:url value='/home'/>" aria-current="${page eq 'home' ? 'page' : 'false'}">Trang chủ</a>
+<<<<<<< HEAD
             <a href="<c:url value='/parts'/>" aria-current="${page eq 'parts' ? 'page' : 'false'}">Linh kiện</a>
+=======
+>>>>>>> 7b17e95d6fc88e759601550b5d92dd354fa852e9
             <a href="<c:url value='/home'/>#workshop">Về workshop</a>
             <c:choose>
                 <c:when test="${not empty sessionScope.user}">

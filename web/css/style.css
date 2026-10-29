@@ -810,6 +810,7 @@ h3 {
     background: #edf6ed;
 }
 
+<<<<<<< HEAD
 .catalog-filter-panel {
     background: var(--white);
     border: 1px solid var(--line);
@@ -942,6 +943,9 @@ h3 {
     .catalog-filter-form {
         grid-template-columns: 1fr 1fr;
     }
+=======
+@media(max-width:991px) {
+>>>>>>> 7b17e95d6fc88e759601550b5d92dd354fa852e9
     .nav-shell {
         flex-wrap: wrap;
         padding-top: 16px;
@@ -1068,12 +1072,15 @@ h3 {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+<<<<<<< HEAD
     .catalog-filter-form {
         grid-template-columns: 1fr;
     }
     .catalog-filter-actions {
         flex-wrap: wrap;
     }
+=======
+>>>>>>> 7b17e95d6fc88e759601550b5d92dd354fa852e9
 }
 
 @media(prefers-reduced-motion:reduce) {
