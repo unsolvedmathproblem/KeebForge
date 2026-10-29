@@ -116,7 +116,9 @@ h3 {
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px 24px;
     align-items: center;
     font-size: .875rem;
     font-weight: 600
@@ -998,6 +1000,71 @@ h3 {
     font-size: .9rem;
     color: var(--ink);
     overflow-wrap: anywhere;
+}
+
+.admin-heading-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    background: #e9ece2;
+    flex-shrink: 0;
+}
+
+.admin-row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-row-actions form {
+    margin: 0;
+}
+
+.admin-action-link {
+    white-space: nowrap;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--ink);
+    background: var(--paper);
+}
+
+.admin-action-link:hover {
+    color: var(--orange);
+    border-color: var(--orange);
+}
+
+.admin-textarea {
+    min-height: 112px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    resize: vertical;
+}
+
+.admin-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
 }
 
 @media(max-width:991px) {

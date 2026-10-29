@@ -4,6 +4,8 @@ import dal.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import model.Brand;
@@ -132,6 +134,119 @@ public class ProductDAO extends DBContext {
             }
         }
         return products;
+    }
+
+    public List<Product> getAdminProducts() throws SQLException {
+        return getAdminProducts(null, null, null);
+    }
+
+    public List<Product> getAdminProducts(String keyword, Integer categoryId, Integer brandId) throws SQLException {
+        StringBuilder sql = new StringBuilder("SELECT ")
+                .append(SELECT_COLUMNS)
+                .append(FROM_JOIN)
+                .append("WHERE 1 = 1");
+        appendFilters(sql, keyword, categoryId, brandId);
+        sql.append(" ORDER BY p.ProductID ASC");
+
+        List<Product> products = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            bindFilters(statement, keyword, categoryId, brandId);
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    products.add(mapProduct(result));
+                }
+            }
+        }
+        return products;
+    }
+
+    public boolean categoryExists(int categoryId) throws SQLException {
+        String sql = "SELECT 1 FROM dbo.Category WHERE CategoryID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, categoryId);
+            try (ResultSet result = statement.executeQuery()) {
+                return result.next();
+            }
+        }
+    }
+
+    public boolean brandExists(int brandId) throws SQLException {
+        String sql = "SELECT 1 FROM dbo.Brand WHERE BrandID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, brandId);
+            try (ResultSet result = statement.executeQuery()) {
+                return result.next();
+            }
+        }
+    }
+
+    public boolean addProduct(Product product) throws SQLException {
+        String sql = "INSERT INTO dbo.Product "
+                + "(ProductName, CategoryID, BrandID, Description, Price, ImageURL, IsActive) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setNString(1, product.getProductName());
+            statement.setInt(2, product.getCategoryId());
+            statement.setInt(3, product.getBrandId());
+            setNullableNString(statement, 4, product.getDescription());
+            statement.setBigDecimal(5, product.getPrice());
+            setNullableNString(statement, 6, product.getImageUrl());
+            statement.setBoolean(7, product.isActive());
+            if (statement.executeUpdate() != 1) {
+                return false;
+            }
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    product.setProductId(keys.getInt(1));
+                }
+            }
+            return true;
+        }
+    }
+
+    public boolean updateProduct(Product product) throws SQLException {
+        String sql = "UPDATE dbo.Product "
+                + "SET ProductName = ?, CategoryID = ?, BrandID = ?, Description = ?, "
+                + "Price = ?, ImageURL = ?, IsActive = ? "
+                + "WHERE ProductID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setNString(1, product.getProductName());
+            statement.setInt(2, product.getCategoryId());
+            statement.setInt(3, product.getBrandId());
+            setNullableNString(statement, 4, product.getDescription());
+            statement.setBigDecimal(5, product.getPrice());
+            setNullableNString(statement, 6, product.getImageUrl());
+            statement.setBoolean(7, product.isActive());
+            statement.setInt(8, product.getProductId());
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    public boolean toggleActive(int productId) throws SQLException {
+        String sql = "UPDATE dbo.Product "
+                + "SET IsActive = CASE WHEN IsActive = 1 THEN 0 ELSE 1 END "
+                + "WHERE ProductID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, productId);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    public boolean toggleActive(int productId, boolean active) throws SQLException {
+        String sql = "UPDATE dbo.Product SET IsActive = ? WHERE ProductID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, active);
+            statement.setInt(2, productId);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    private void setNullableNString(PreparedStatement statement, int index, String value) throws SQLException {
+        if (value == null || value.isEmpty()) {
+            statement.setNull(index, Types.NVARCHAR);
+        } else {
+            statement.setNString(index, value);
+        }
     }
 
     private void appendFilters(StringBuilder sql, String keyword, Integer categoryId, Integer brandId) {
