@@ -1,6 +1,7 @@
 package controller;
 
 import dao.ProductDAO;
+import dao.ServiceDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,19 +14,41 @@ import java.util.List;
 import model.Brand;
 import model.Category;
 import model.Product;
+import model.WorkshopService;
 
-@WebServlet(name = "ProductServlet", urlPatterns = {"/parts"})
+@WebServlet(name = "ProductServlet", urlPatterns = {"/home", "/parts"})
 public class ProductServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private static final int PAGE_SIZE = 6;
+    private static final int FEATURED_LIMIT = 6;
     private static final int MAX_KEYWORD_LENGTH = 120;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setHeader("Cache-Control", "no-store");
-        showParts(request, response);
+        if ("/home".equals(request.getServletPath())) {
+            showHome(request, response);
+        } else {
+            showParts(request, response);
+        }
+    }
+
+    private void showHome(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try (ServiceDAO serviceDao = new ServiceDAO();
+                ProductDAO productDao = new ProductDAO()) {
+            List<WorkshopService> services = serviceDao.getActiveServices();
+            List<Product> products = productDao.getFeaturedProducts(FEATURED_LIMIT);
+            request.setAttribute("services", services);
+            request.setAttribute("products", products);
+        } catch (SQLException ex) {
+            getServletContext().log("Không thể tải dữ liệu trang chủ tại ProductServlet.", ex);
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            request.setAttribute("errorMessage", "Chưa thể tải dữ liệu trang chủ lúc này. Vui lòng thử lại sau.");
+        }
+        request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
     }
 
     private void showParts(HttpServletRequest request, HttpServletResponse response)

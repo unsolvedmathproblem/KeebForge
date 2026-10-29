@@ -103,6 +103,37 @@ public class ProductDAO extends DBContext {
         }
     }
 
+    public List<Product> getFeaturedProducts(int limit) throws SQLException {
+        int safeLimit = Math.max(1, limit);
+        String sql = "SELECT " + SELECT_COLUMNS + FROM_JOIN
+                + "WHERE p.IsActive = 1 "
+                + "ORDER BY p.CreatedAt DESC, p.ProductID DESC "
+                + "OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY";
+        List<Product> products = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, safeLimit);
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    products.add(mapProduct(result));
+                }
+            }
+        }
+        return products;
+    }
+
+    public List<Product> getActiveProducts() throws SQLException {
+        String sql = "SELECT " + SELECT_COLUMNS + FROM_JOIN
+                + "WHERE p.IsActive = 1 ORDER BY p.ProductID ASC";
+        List<Product> products = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery()) {
+            while (result.next()) {
+                products.add(mapProduct(result));
+            }
+        }
+        return products;
+    }
+
     private void appendFilters(StringBuilder sql, String keyword, Integer categoryId, Integer brandId) {
         if (hasKeyword(keyword)) {
             sql.append(" AND p.ProductName LIKE ? ESCAPE '\\'");
