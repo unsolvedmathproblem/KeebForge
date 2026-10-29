@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # ⌨️ KeebForge — Keyboard Workshop
+=======
+# KeebForce — Assignment
+>>>>>>> 1c05161 (change project name)
 
 <p align="center">
   <strong>PROJECT MÔN HỌC PRJ301 · FPT UNIVERSITY</strong>
@@ -15,7 +19,19 @@
 
 ## 📖 Giới thiệu
 
+<<<<<<< HEAD
 **KeebForge** là dự án website workshop bàn phím cơ được phát triển trong khuôn khổ môn học **PRJ301 — Java Web Application Development** tại **Đại học FPT**.
+=======
+1. Mở thư mục này bằng **NetBeans 17**, chọn **JDK 17** và **Tomcat 10.1**.
+2. Trên SQL Server 2019+, nếu chưa có database KeebForce_PRJ301, chạy lần lượt
+   `database/01_create_database.sql`, `02_schema.sql`, `03_seed.sql`.
+   Máy đã có DB/dữ liệu thì không chạy lại các script tạo/seed; dùng `04_verify.sql`.
+3. Copy `config/db.properties.example` (SQL login) hoặc `db-windows.properties.example`
+   thành **TOMCAT_BASE/conf/keebforce-db.properties** rồi điền cấu hình máy bạn.
+   Windows auth cần DLL/setenv theo [docs/setup.md](docs/setup.md).
+   DBContext tự đọc file này; không cần đặt VM Option cho đường dẫn DB.
+4. Clean and Build rồi Run Project. Mở `http://localhost:8080/KeebForce/`.
+>>>>>>> 1c05161 (change project name)
 
 Dự án hướng đến việc xây dựng nền tảng web có cấu trúc rõ ràng, áp dụng kiến thức Java Web, Servlet, JSP, JDBC và SQL Server vào một ứng dụng thực tế.
 
@@ -153,15 +169,30 @@ Lệnh trên thực hiện clean và đóng gói dự án. Để triển khai, s
 
 Các tài khoản website giả lập phục vụ kiểm thử:
 
+<<<<<<< HEAD
 | Username | Password | Role |
 |---|---|---|
 | `admin` | `Admin@123` | `ADMIN` |
 | `customer1` | `Customer@123` | `CUSTOMER` |
 | `customer2` | `Customer@123` | `CUSTOMER` |
+=======
+Đây là tài khoản website giả lập, không phải SQL Server login.
+Các route hiện có: `/home`, `/login`, `/register`, `/profile`, POST `/logout`,
+`/admin/users`. Mọi path ở sau context `/KeebForce`.
+>>>>>>> 1c05161 (change project name)
 
 **Lưu ý:** Đây là tài khoản của ứng dụng KeebForge, không phải tài khoản đăng nhập SQL Server. Các tài khoản chỉ khả dụng khi dữ liệu mẫu tương ứng đã được khởi tạo và mật khẩu khớp với cấu hình xác thực của ứng dụng.
 
+<<<<<<< HEAD
 ## 🧭 Các endpoint hiện có
+=======
+- [Setup](docs/setup.md): môi trường, JAR, cấu hình DB/Tomcat và cách chạy SQL.
+- [UI dùng chung](docs/ui-guide.md): JSP include, CSS, message, CSRF và money.tag.
+- [Báo cáo bàn giao P1](docs/handover-p1.md): kiểm tra cuối, artifact và giới hạn.
+- `dist/KeebForce.war`: bản deploy.
+- `dist/KeebForce-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
+  không chứa cấu hình máy hoặc mật khẩu SQL thật.
+>>>>>>> 1c05161 (change project name)
 
 Các đường dẫn dưới đây nằm sau context path `/KeebForge`.
 

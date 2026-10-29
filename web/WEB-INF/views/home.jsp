@@ -7,8 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KeebForge — workshop lắp ráp, vệ sinh và chăm sóc bàn phím cơ theo nhu cầu của bạn.">
-    <title>KeebForge — Chăm chút từng phím</title>
+    <meta name="description" content="KeebForce — workshop lắp ráp, vệ sinh và chăm sóc bàn phím cơ theo nhu cầu của bạn.">
+    <title>KeebForce — Chăm chút từng phím</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
 <body class="page-body">
@@ -18,7 +18,7 @@
         <div class="hero-copy">
             <p class="eyebrow"><span aria-hidden="true">●</span> GÓC NHỎ CHO NGƯỜI YÊU BÀN PHÍM</p>
             <h1 id="hero-title">Bàn phím của bạn.<br><span>Chất riêng của bạn.</span></h1>
-            <p class="hero-description">Từ những cú gõ đầu tiên đến một bộ phím thật vừa ý. KeebForge giúp bạn lắp ráp, chăm sóc và làm mới bàn phím theo nhu cầu.</p>
+            <p class="hero-description">Từ những cú gõ đầu tiên đến một bộ phím thật vừa ý. KeebForce giúp bạn lắp ráp, chăm sóc và làm mới bàn phím theo nhu cầu.</p>
             <a class="btn btn-workshop" href="#quy-trinh">Khám phá workshop <span aria-hidden="true">↗</span></a>
             <p class="hero-note">Lắp ráp, chăm sóc và làm mới bàn phím cơ.</p>
         </div>

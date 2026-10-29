@@ -3,7 +3,7 @@
 <a class="skip-link" href="#main-content">Bỏ qua menu, đến nội dung</a>
 <header class="site-header">
     <nav class="container nav-shell" aria-label="Điều hướng chính">
-        <a class="brand" href="<c:url value='/home'/>"><span class="brand-mark" aria-hidden="true">K.</span> KeebForge<span class="brand-label">WORKSHOP</span></a>
+        <a class="brand" href="<c:url value='/home'/>"><span class="brand-mark" aria-hidden="true">K.</span> KeebForce<span class="brand-label">WORKSHOP</span></a>
         <div class="nav-links">
             <a href="<c:url value='/home'/>" aria-current="${page eq 'home' ? 'page' : 'false'}">Trang chủ</a>
             <a href="<c:url value='/home'/>#workshop">Về workshop</a>

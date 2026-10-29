@@ -24,14 +24,14 @@ cần xóa. P1 không thêm Model/DAO của P2/P3 để lấp đầy cây packag
 
 ## Artifact
 
-- `dist/KeebForge.war`: 5.491.786 bytes (đã cập nhật bản sửa cấu hình DB mặc định).
-- SHA-256 WAR: `BD133F837E7935F239C0CA3B0EB872146AA76FF1699D73C9FC445B13AB310346`.
-- `dist/KeebForge-P1-source.zip`: source/JAR/SQL/docs/metadata chia sẻ,
+- `dist/KeebForce.war`: bản deploy đã đồng bộ tên KeebForce.
+- Dung lượng và SHA-256 bản đổi tên ghi trong progress/P1.md ngoài repository.
+- `dist/KeebForce-P1-source.zip`: source/JAR/SQL/docs/metadata chia sẻ,
   không config thật, DLL, Git internals, output build hoặc requirement bên ngoài.
 
 WAR không chứa SQL/docs/config DB thật/native DLL/test fixture hoặc Servlet/JSP API
 của Tomcat. JDBC/JSTL dùng đường dẫn tương đối trong web/WEB-INF/lib; version ở setup.
-WAR đọc DB local từ TOMCAT_BASE/conf/keebforge-db.properties khi không có override;
+WAR đọc DB local từ TOMCAT_BASE/conf/keebforce-db.properties khi không có override;
 không tự tạo database hay SQL login.
 
 `.gitignore` trước đây bỏ qua toàn bộ nbproject và build-impl.xml.
@@ -117,7 +117,7 @@ Thông tin chạy, tài khoản demo/JAR ở [setup.md](setup.md), quy ước gh
 đọc mặc định file trong conf; giữ Properties/JDBC, AutoCloseable và lỗi SQLException,
 không copy nguyên DBContext Q3 để lại connection null hoặc thiếu close().
 Đã cấu hình đúng server NetBeans, restart và chạy 18 kiểm tra HTTP/SQL đạt ngay
-trên cổng 8080, không truyền keebforge.db.config từ lệnh chạy thử.
+trên cổng 8080, không truyền keebforce.db.config từ lệnh chạy thử.
 
 Theo yêu cầu người dùng, hai DB cũ KeebForgeDB/KeebForge_P102_Verify được backup
 COPY_ONLY/CHECKSUM, VERIFYONLY rồi xóa; KeebForce_PRJ301 được giữ nguyên.
@@ -134,3 +134,7 @@ vẫn giữ nguyên như phần báo cáo, không được coi là đã chạy t
 Lần chốt này chỉ cập nhật tài liệu/source ZIP, không sửa nghiệp vụ, DB hoặc server.
 
 **Trạng thái: đã nghiệm thu và kết thúc P1. Dừng tại đây, chưa triển khai P2/P3.**
+
+## Đồng bộ tên project — 29/10/2026
+
+Đổi tên giao diện, cấu hình DB và tài liệu sang KeebForce. Tomcat dùng conf/keebforce-db.properties và conf/keebforce-native; context /KeebForce trỏ tới D:/source_code/PRJ301/KeebForce/build/web. Database KeebForce_PRJ301 và dữ liệu giữ nguyên. Tên DB/backup cũ trong lịch sử giữ để tra cứu.

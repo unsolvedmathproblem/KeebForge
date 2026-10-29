@@ -1,7 +1,7 @@
 # Windows Authentication, không cần SQL login/password.
-# Copy thành TOMCAT_BASE/conf/keebforge-db.properties (ngoài source/WAR).
+# Copy thành TOMCAT_BASE/conf/keebforce-db.properties (ngoài source/WAR).
 db.url=jdbc:sqlserver://localhost:1433;databaseName=KeebForce_PRJ301;encrypt=true;trustServerCertificate=true
 db.integratedSecurity=true
-# Đặt DLL Microsoft mssql-jdbc_auth-12.8.0.x64.dll trong TOMCAT_HOME/conf/keebforge-native/.
+# Đặt DLL Microsoft mssql-jdbc_auth-12.8.0.x64.dll trong TOMCAT_HOME/conf/keebforce-native/.
 # Copy config/setenv.bat.example thành TOMCAT_HOME/bin/setenv.bat rồi restart Tomcat.
 # Nếu đã có setenv.bat, giữ nội dung cũ và chỉ thêm cấu hình cần thiết.
