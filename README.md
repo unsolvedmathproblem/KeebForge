@@ -1,8 +1,9 @@
 # KeebForge — Assignment
 
-Workshop bàn phím cho đồ án PRJ301. **P1 đã được người dùng nghiệm thu và kết thúc:**
-đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
-Catalog và luồng đơn thuộc P2/P3, chưa được triển khai.
+Workshop bàn phím cho đồ án PRJ301.
+- **P1 (đã nghiệm thu):** đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
+- **P2 (đã nghiệm thu):** trang chủ đọc DB, catalog linh kiện (tìm kiếm/lọc/phân trang/ảnh dự phòng), danh sách dịch vụ & đọc đánh giá, quản trị linh kiện và quản trị dịch vụ Admin.
+- **P3:** luồng gửi yêu cầu dịch vụ, lịch sử/hủy/đánh giá đơn, quản trị đơn và dashboard (chưa ghép vào nhánh này).
 
 Thành viên nhóm: **Nguyễn Văn Lê Hào, Nguyễn Anh Tiền, Vũ Hoàng Nguyên**.
 
@@ -36,14 +37,16 @@ Giữ metadata `nbproject` dùng chung để thành viên khác mở/build proje
 | customer2 | Customer@123 | CUSTOMER |
 
 Đây là tài khoản website giả lập, không phải SQL Server login.
-Các route hiện có: `/home`, `/login`, `/register`, `/profile`, POST `/logout`,
-`/admin/users`. Mọi path ở sau context `/KeebForge`.
+Các route hiện có: `/home`, `/parts`, `/services`, `/login`, `/register`, `/profile`,
+POST `/logout`, `/admin/products`, `/admin/services`, `/admin/users`.
+Mọi path ở sau context `/KeebForge`.
 
 ## Tài liệu và bản bàn giao
 
 - [Setup](docs/setup.md): môi trường, JAR, cấu hình DB/Tomcat và cách chạy SQL.
 - [UI dùng chung](docs/ui-guide.md): JSP include, CSS, message, CSRF và money.tag.
-- [Báo cáo bàn giao P1](docs/handover-p1.md): kiểm tra cuối, artifact và giới hạn.
+- [Báo cáo bàn giao P1](docs/handover-p1.md): kiểm tra cuối, artifact và giới hạn P1.
+- [Báo cáo bàn giao P2](docs/handover-p2.md): model/getter/DAO bàn giao cho P3, kết quả kiểm tra và hướng dẫn chụp ảnh P2.
 - `dist/KeebForge.war`: bản deploy.
 - `dist/KeebForge-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
   không chứa cấu hình máy hoặc mật khẩu SQL thật.

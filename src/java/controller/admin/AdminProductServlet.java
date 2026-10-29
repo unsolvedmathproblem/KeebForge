@@ -185,7 +185,7 @@ public class AdminProductServlet extends HttpServlet {
         String categoryRaw = trimToEmpty(request.getParameter("categoryId"));
         String brandRaw = trimToEmpty(request.getParameter("brandId"));
         String priceRaw = trimToEmpty(request.getParameter("price"));
-        String imageUrl = trimToEmpty(request.getParameter("imageUrl"));
+        String imageUrl = normalizeImageUrl(trimToEmpty(request.getParameter("imageUrl")), request.getContextPath());
         String description = trimToEmpty(request.getParameter("description"));
         Boolean parsedActive = parseActive(request.getParameter("active"));
 
@@ -371,6 +371,17 @@ public class AdminProductServlet extends HttpServlet {
             return true;
         }
         return value.toLowerCase(Locale.ROOT).contains("javascript:");
+    }
+
+    private String normalizeImageUrl(String rawUrl, String contextPath) {
+        if (rawUrl.isEmpty() || contextPath == null || contextPath.isEmpty()) {
+            return rawUrl;
+        }
+        String prefix = contextPath + "/";
+        if (rawUrl.startsWith(prefix)) {
+            return rawUrl.substring(contextPath.length());
+        }
+        return rawUrl;
     }
 
     private boolean isSafeImageUrl(String url) {

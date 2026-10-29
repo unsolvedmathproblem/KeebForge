@@ -4,6 +4,7 @@ import dal.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.ServiceReview;
@@ -43,12 +44,78 @@ public class ServiceDAO extends DBContext {
         }
     }
 
+    public List<WorkshopService> getAllForAdmin() throws SQLException {
+        String sql = "SELECT " + COLUMNS + " FROM dbo.WorkshopService ORDER BY ServiceID ASC";
+        List<WorkshopService> services = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery()) {
+            while (result.next()) {
+                services.add(mapService(result));
+            }
+        }
+        return services;
+    }
+
+    public boolean addService(WorkshopService service) throws SQLException {
+        String sql = "INSERT INTO dbo.WorkshopService "
+                + "(ServiceName, Description, BasePrice, IsActive) "
+                + "VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setNString(1, service.getServiceName());
+            statement.setNString(2, service.getDescription());
+            statement.setBigDecimal(3, service.getBasePrice());
+            statement.setBoolean(4, service.isActive());
+            if (statement.executeUpdate() != 1) {
+                return false;
+            }
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    service.setServiceId(keys.getInt(1));
+                }
+            }
+            return true;
+        }
+    }
+
+    public boolean updateService(WorkshopService service) throws SQLException {
+        String sql = "UPDATE dbo.WorkshopService "
+                + "SET ServiceName = ?, Description = ?, BasePrice = ?, IsActive = ? "
+                + "WHERE ServiceID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setNString(1, service.getServiceName());
+            statement.setNString(2, service.getDescription());
+            statement.setBigDecimal(3, service.getBasePrice());
+            statement.setBoolean(4, service.isActive());
+            statement.setInt(5, service.getServiceId());
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    public boolean toggleActive(int serviceId) throws SQLException {
+        String sql = "UPDATE dbo.WorkshopService "
+                + "SET IsActive = CASE WHEN IsActive = 1 THEN 0 ELSE 1 END "
+                + "WHERE ServiceID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, serviceId);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    public boolean toggleActive(int serviceId, boolean active) throws SQLException {
+        String sql = "UPDATE dbo.WorkshopService SET IsActive = ? WHERE ServiceID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, active);
+            statement.setInt(2, serviceId);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
     public List<ServiceReview> getReviews(int serviceId) throws SQLException {
         String sql = "SELECT r.ReviewID, r.OrderID, r.Rating, r.Comment, r.CreatedAt, u.FullName "
                 + "FROM dbo.ServiceReview AS r "
                 + "JOIN dbo.ServiceOrder AS o ON o.OrderID = r.OrderID "
                 + "JOIN dbo.UserAccount AS u ON u.AccountID = o.AccountID "
-                + "WHERE o.ServiceID = ? "
+                + "WHERE o.ServiceID = ? AND o.OrderStatus = 'COMPLETED' "
                 + "ORDER BY r.CreatedAt DESC, r.ReviewID DESC";
         List<ServiceReview> reviews = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

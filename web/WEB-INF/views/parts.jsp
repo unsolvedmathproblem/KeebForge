@@ -20,9 +20,12 @@
             <h1>Linh kiện &amp; bàn phím tham khảo</h1>
             <p class="panel-description">Tra cứu kit, switch, keycap và phụ kiện hiện có tại workshop để chọn kèm khi gửi yêu cầu dịch vụ.</p>
         </div>
-        <c:if test="${not empty totalProducts}">
-            <span class="account-badge"><c:out value="${totalProducts}" /> linh kiện</span>
-        </c:if>
+        <div class="admin-heading-actions">
+            <c:if test="${not empty totalProducts}">
+                <span class="account-badge"><c:out value="${totalProducts}" /> linh kiện</span>
+            </c:if>
+            <a class="btn btn-workshop" href="<c:url value='/services'/>">Chọn gói dịch vụ →</a>
+        </div>
     </div>
 
     <jsp:include page="/WEB-INF/views/common/messages.jsp" />
@@ -112,6 +115,7 @@
     </c:if>
 
     <c:if test="${totalPages > 1}">
+        <p class="pagination-summary">Trang <strong><c:out value="${currentPage}" /></strong> / <c:out value="${totalPages}" /></p>
         <nav class="catalog-pagination" aria-label="Phân trang danh mục linh kiện">
             <c:if test="${currentPage > 1}">
                 <c:url var="prevUrl" value="/parts">

@@ -1067,6 +1067,80 @@ h3 {
     margin-top: 8px;
 }
 
+.admin-inline-panel {
+    margin-bottom: 28px;
+}
+
+.admin-row-editing td {
+    background: #edf6ed;
+}
+
+.pagination-summary {
+    text-align: center;
+    font-size: .82rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.review-summary-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.review-average-badge {
+    color: #8f3d1e;
+    background: #fff1ed;
+}
+
+.review-service-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.review-tab-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper);
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.review-tab-pill:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+}
+
+.review-tab-active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+}
+
+.review-tab-active:hover {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+}
+
+.review-tab-clear {
+    color: var(--muted);
+    background: transparent;
+}
+
+.btn:focus-visible,
+.form-control:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 2px;
+}
+
 @media(max-width:991px) {
     .catalog-filter-form {
         grid-template-columns: 1fr 1fr;
@@ -1205,6 +1279,13 @@ h3 {
     }
     .service-reviews-panel {
         padding: 22px 20px;
+    }
+    .admin-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .admin-heading-actions {
+        width: 100%;
     }
 }
 

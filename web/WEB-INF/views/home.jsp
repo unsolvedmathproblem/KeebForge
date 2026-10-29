@@ -62,7 +62,7 @@
                     </c:url>
                     <div class="col-md-6">
                         <article class="workshop-card">
-                            <span class="card-number">0<c:out value="${status.count}" /> / SERVICE #<c:out value="${service.serviceId}" /></span>
+                            <span class="card-number"><c:out value="${status.count < 10 ? '0' : ''}${status.count}" /> / SERVICE #<c:out value="${service.serviceId}" /></span>
                             <h3><c:out value="${service.serviceName}" /></h3>
                             <p><c:out value="${service.description}" /></p>
                             <div class="card-detail">

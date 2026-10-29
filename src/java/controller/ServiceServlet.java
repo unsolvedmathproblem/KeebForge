@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 import model.ServiceReview;
 import model.WorkshopService;
 
@@ -33,6 +34,14 @@ public class ServiceServlet extends HttpServlet {
                     List<ServiceReview> reviews = dao.getReviews(selectedService.getServiceId());
                     request.setAttribute("selectedService", selectedService);
                     request.setAttribute("reviews", reviews);
+                    if (!reviews.isEmpty()) {
+                        int totalRating = 0;
+                        for (ServiceReview review : reviews) {
+                            totalRating += review.getRating();
+                        }
+                        double average = (double) totalRating / reviews.size();
+                        request.setAttribute("averageRating", String.format(Locale.US, "%.1f", average));
+                    }
                 } else {
                     request.setAttribute("errorMessage", "Dịch vụ bạn chọn không tồn tại hoặc hiện đã ngừng nhận yêu cầu.");
                 }

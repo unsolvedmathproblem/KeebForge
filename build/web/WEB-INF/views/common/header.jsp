@@ -14,6 +14,7 @@
                     <c:if test="${sessionScope.user.role eq 'ADMIN'}">
                         <span class="account-badge">Quản trị viên</span>
                         <a href="<c:url value='/admin/products'/>" aria-current="${page eq 'admin-products' ? 'page' : 'false'}">QL Linh kiện</a>
+                        <a href="<c:url value='/admin/services'/>" aria-current="${page eq 'admin-services' ? 'page' : 'false'}">QL Dịch vụ</a>
                         <a href="<c:url value='/admin/users'/>" aria-current="${page eq 'users' ? 'page' : 'false'}">Tài khoản</a>
                     </c:if>
                     <a href="<c:url value='/profile'/>" aria-current="${page eq 'profile' ? 'page' : 'false'}">Hồ sơ</a>
