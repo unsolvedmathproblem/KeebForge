@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Linh kiện &amp; Bàn phím — KeebForge</title>
+    <title>Linh kiện &amp; Bàn phím — KeebForce</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
 <body class="page-body">

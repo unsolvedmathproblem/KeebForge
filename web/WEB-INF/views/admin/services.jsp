@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quản lý dịch vụ — KeebForge</title>
+    <title>Quản lý dịch vụ — KeebForce</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
 <body class="page-body">
@@ -16,7 +16,7 @@
 <main id="main-content" class="container admin-main">
     <div class="admin-heading">
         <div>
-            <p class="eyebrow">QUẢN TRỊ KEEBFORGE</p>
+            <p class="eyebrow">QUẢN TRỊ KEEBFORCE</p>
             <h1>Quản lý dịch vụ workshop</h1>
             <p class="panel-description">
                 Thiết lập các gói công cố định của workshop. Việc đổi tiền công hoặc ngừng nhận mới không ảnh hưởng đến giá công đã lưu trên các đơn cũ.

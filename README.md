@@ -1,4 +1,4 @@
-# ⌨️ KeebForge — Keyboard Workshop
+# ⌨️ KeebForce — Keyboard Workshop
 
 Workshop bàn phím cho đồ án PRJ301.
 - **P1 (đã nghiệm thu):** đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
@@ -9,7 +9,7 @@ Workshop bàn phím cho đồ án PRJ301.
 
 ## 📖 Giới thiệu
 
-**KeebForge** là dự án website workshop bàn phím cơ được phát triển trong khuôn khổ môn học **PRJ301 — Java Web Application Development** tại **Đại học FPT**.
+**KeebForce** là dự án website workshop bàn phím cơ được phát triển trong khuôn khổ môn học **PRJ301 — Java Web Application Development** tại **Đại học FPT**.
 
 Dự án hướng đến việc xây dựng nền tảng web có cấu trúc rõ ràng, áp dụng kiến thức Java Web, Servlet, JSP, JDBC và SQL Server vào một ứng dụng thực tế.
 
@@ -113,7 +113,7 @@ Sao chép một trong các file cấu hình mẫu:
 
 Đặt file cấu hình đã chỉnh sửa tại:
 
-`TOMCAT_BASE/conf/keebforge-db.properties`
+`TOMCAT_BASE/conf/keebforce-db.properties`
 
 Điền thông tin kết nối SQL Server phù hợp với máy của bạn.
 
@@ -129,7 +129,7 @@ Trong NetBeans:
 2. Chọn **Run Project**.
 3. Mở trình duyệt tại địa chỉ:
 
-**http://localhost:8080/KeebForge/**
+**http://localhost:8080/KeebForce/**
 
 Nếu cổng hoặc context path đã được thay đổi, hãy sử dụng URL tương ứng với cấu hình Tomcat của bạn.
 
@@ -154,19 +154,19 @@ Các tài khoản website giả lập phục vụ kiểm thử:
 | `customer2` | `Customer@123` | `CUSTOMER` |
 Các route hiện có: `/home`, `/parts`, `/services`, `/login`, `/register`, `/profile`,
 POST `/logout`, `/admin/products`, `/admin/services`, `/admin/users`.
-Mọi path ở sau context `/KeebForge`.
+Mọi path ở sau context `/KeebForce`.
 
 
-**Lưu ý:** Đây là tài khoản của ứng dụng KeebForge, không phải tài khoản đăng nhập SQL Server. Các tài khoản chỉ khả dụng khi dữ liệu mẫu tương ứng đã được khởi tạo và mật khẩu khớp với cấu hình xác thực của ứng dụng.
+**Lưu ý:** Đây là tài khoản của ứng dụng KeebForce, không phải tài khoản đăng nhập SQL Server. Các tài khoản chỉ khả dụng khi dữ liệu mẫu tương ứng đã được khởi tạo và mật khẩu khớp với cấu hình xác thực của ứng dụng.
 
 ## 🧭 Các endpoint hiện có
 - [Báo cáo bàn giao P1](docs/handover-p1.md): kiểm tra cuối, artifact và giới hạn P1.
 - [Báo cáo bàn giao P2](docs/handover-p2.md): model/getter/DAO bàn giao cho P3, kết quả kiểm tra và hướng dẫn chụp ảnh P2.
-- `dist/KeebForge.war`: bản deploy.
-- `dist/KeebForge-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
+- `dist/KeebForce.war`: bản deploy.
+- `dist/KeebForce-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
   không chứa cấu hình máy hoặc mật khẩu SQL thật.
 
-Các đường dẫn dưới đây nằm sau context path `/KeebForge`.
+Các đường dẫn dưới đây nằm sau context path `/KeebForce`.
 
 | Endpoint | Mục đích |
 |---|---|
@@ -177,12 +177,12 @@ Các đường dẫn dưới đây nằm sau context path `/KeebForge`.
 | `/logout` | Đăng xuất bằng HTTP POST |
 | `/admin/users` | Quản lý tài khoản Admin |
 
-Ví dụ: `http://localhost:8080/KeebForge/login`
+Ví dụ: `http://localhost:8080/KeebForce/login`
 
 ## 📁 Cấu trúc repository
 
 ```text
-KeebForge/
+KeebForce/
 ├── database/
 │   ├── 01_create_database.sql
 │   ├── 02_schema.sql
@@ -197,8 +197,8 @@ KeebForge/
 │   └── handover-p1.md
 ├── nbproject/
 ├── dist/
-│   ├── KeebForge.war
-│   └── KeebForge-P1-source.zip
+│   ├── KeebForce.war
+│   └── KeebForce-P1-source.zip
 └── README.md
 ```
 
@@ -217,8 +217,8 @@ KeebForge/
 | [`docs/setup.md`](docs/setup.md) | Môi trường, JAR, cấu hình database/Tomcat và hướng dẫn chạy SQL |
 | [`docs/ui-guide.md`](docs/ui-guide.md) | JSP include, CSS, message, CSRF và `money.tag` |
 | [`docs/handover-p1.md`](docs/handover-p1.md) | Kiểm tra cuối, artifact và giới hạn của P1 |
-| `dist/KeebForge.war` | Gói triển khai ứng dụng web |
-| `dist/KeebForge-P1-source.zip` | Source P1 kèm metadata, SQL, JAR và tài liệu bàn giao |
+| `dist/KeebForce.war` | Gói triển khai ứng dụng web |
+| `dist/KeebForce-P1-source.zip` | Source P1 kèm metadata, SQL, JAR và tài liệu bàn giao |
 
 Các artifact trong `dist/` chỉ có thể sử dụng sau khi đã được tạo thành công bằng quy trình build của dự án.
 
@@ -233,14 +233,24 @@ Các giai đoạn tiếp theo được định hướng như sau:
 
 ## 🎓 Mục tiêu học tập
 
-Thông qua dự án KeebForge, nhóm hướng đến việc vận dụng kiến thức Java Web vào một sản phẩm có thể build và triển khai, thực hành kết nối cơ sở dữ liệu, tổ chức mã nguồn, quản lý phiên và phân quyền, đồng thời phối hợp nhóm thông qua Git và GitHub.
+Thông qua dự án KeebForce, nhóm hướng đến việc vận dụng kiến thức Java Web vào một sản phẩm có thể build và triển khai, thực hành kết nối cơ sở dữ liệu, tổ chức mã nguồn, quản lý phiên và phân quyền, đồng thời phối hợp nhóm thông qua Git và GitHub.
 
 ---
 
 <p align="center">
-  <strong>KEEBFORGE</strong>
+  <strong>KEEBFORCE</strong>
   <br />
   <em>Built with Java · Developed for PRJ301 at FPT University</em>
   <br /><br />
   <sub>Project by Vũ Hoàng Nguyên · Nguyễn Anh Tiền · Nguyễn Văn Lê Hào</sub>
 </p>
+
+### Sau khi merge nhánh và đổi tên project
+
+Dùng context `/KeebForce` và file `TOMCAT_BASE/conf/keebforce-db.properties`.
+Nếu log báo không tìm thấy file cấu hình có tên cũ dù `src/java/dal/DBContext.java`
+đã dùng tên mới, hãy Stop Tomcat, Clean and Build rồi Run lại project.
+Tomcat descriptor `conf/Catalina/localhost/KeebForce.xml` phải dùng context
+`/KeebForce` và docBase trỏ tới folder `KeebForce/build/web` hiện tại trên máy.
+Không dùng lại thư mục build hoặc WAR từ nhánh cũ. Không cần tạo lại database
+khi nguyên nhân là class đã biên dịch hoặc cấu hình deploy cũ.

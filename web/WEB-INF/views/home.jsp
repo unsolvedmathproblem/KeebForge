@@ -19,7 +19,7 @@
         <div class="hero-copy">
             <p class="eyebrow"><span aria-hidden="true">●</span> GÓC NHỎ CHO NGƯỜI YÊU BÀN PHÍM</p>
             <h1 id="hero-title">Bàn phím của bạn.<br><span>Chất riêng của bạn.</span></h1>
-            <p class="hero-description">Từ những cú gõ đầu tiên đến một bộ phím thật vừa ý. KeebForge giúp bạn lắp ráp, chăm sóc và làm mới bàn phím theo nhu cầu.</p>
+            <p class="hero-description">Từ những cú gõ đầu tiên đến một bộ phím thật vừa ý. KeebForce giúp bạn lắp ráp, chăm sóc và làm mới bàn phím theo nhu cầu.</p>
             <div class="hero-actions">
                 <a class="btn btn-workshop" href="<c:url value='/services'/>">Xem gói dịch vụ <span aria-hidden="true">↗</span></a>
                 <a class="btn catalog-reset-link" href="<c:url value='/parts'/>">Tham khảo linh kiện</a>

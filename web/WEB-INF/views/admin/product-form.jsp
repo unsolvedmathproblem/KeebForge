@@ -7,13 +7,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><c:out value="${isEditMode ? 'Cập nhật linh kiện' : 'Thêm linh kiện mới'}" /> — KeebForge</title>
+    <title><c:out value="${isEditMode ? 'Cập nhật linh kiện' : 'Thêm linh kiện mới'}" /> — KeebForce</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
 <body class="page-body">
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <main id="main-content" class="container profile-main">
-    <p class="eyebrow">QUẢN TRỊ KEEBFORGE</p>
+    <p class="eyebrow">QUẢN TRỊ KEEBFORCE</p>
     <h1>
         <c:choose>
             <c:when test="${isEditMode}">

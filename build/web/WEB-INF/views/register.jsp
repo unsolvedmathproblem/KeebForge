@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Đăng ký — KeebForge</title>
+    <title>Đăng ký — KeebForce</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
 <body class="page-body">
@@ -15,11 +15,11 @@
     <section class="auth-intro" aria-labelledby="intro-title">
         <p class="eyebrow">BẮT ĐẦU TỪ MỘT KẾT NỐI</p>
         <h1 id="intro-title">Một tài khoản.<br><span>Một góc của riêng bạn.</span></h1>
-        <p>Tạo tài khoản khách hàng để đồng hành cùng KeebForge trên hành trình chăm chút bộ phím yêu thích.</p>
+        <p>Tạo tài khoản khách hàng để đồng hành cùng KeebForce trên hành trình chăm chút bộ phím yêu thích.</p>
         <a class="text-link" href="<c:url value='/home'/>">← Tìm hiểu về workshop</a>
     </section>
     <section class="auth-panel" aria-labelledby="form-title">
-        <p class="eyebrow">CHÀO MỪNG ĐẾN VỚI KEEBFORGE</p>
+        <p class="eyebrow">CHÀO MỪNG ĐẾN VỚI KEEBFORCE</p>
         <h2 id="form-title">Tạo tài khoản</h2>
         <p class="panel-description">Điền thông tin bên dưới. Số điện thoại có thể bổ sung sau.</p>
         <jsp:include page="/WEB-INF/views/common/messages.jsp" />
