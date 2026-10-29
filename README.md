@@ -1,7 +1,7 @@
 # ⌨️ KeebForge — Keyboard Workshop
 
 <p align="center">
-  <strong>ĐỒ ÁN MÔN HỌC PRJ301 · FPT UNIVERSITY</strong>
+  <strong>PROJECT MÔN HỌC PRJ301 · FPT UNIVERSITY</strong>
   <br />
   <em>A web application for a mechanical keyboard workshop</em>
   <br /><br />
