@@ -1,0 +1,34 @@
+﻿OK 1 Anonymous redirected to login
+OK 2 Login customer1
+OK 3 Login admin
+OK 4 ADMIN cannot open customer form
+OK 5 Active service from real DB
+OK 6 Published service price
+OK 7 10 active products from P2 DAO
+OK 8 Contact fields populated from session account
+OK 9 Form contract and common CSRF token
+OK 10 Device required and note length limited
+OK 11 Per-product quantity contract
+OK 12 Preferred date starts today in Vietnam
+OK 13 Submission enabled since P3-03, estimate retained
+OK 14 Shared layout and footer
+OK 15 Bad service query rejected: 
+OK 16 Bad service query rejected: ?serviceId=
+OK 17 Bad service query rejected: ?serviceId=abc
+OK 18 Bad service query rejected: ?serviceId=0
+OK 19 Bad service query rejected: ?serviceId=-1
+OK 20 Bad service query rejected: ?serviceId=2147483648
+OK 21 Bad service query rejected: ?serviceId=1&serviceId=2
+OK 22 Bad service query rejected: ?serviceId=%3Cscript%3E
+OK 23 Bad service query rejected: ?serviceId=1.5
+OK 24 Missing service has no form
+OK 25 Temporarily stop accepting service
+OK 26 Inactive service rejected
+OK 27 Service restored after test
+OK 28 JSP protected under WEB-INF
+OK 29 Public asset /css/orders.css
+OK 30 Public asset /js/orders.js
+OK 31 POST without CSRF rejected by P1 Filter
+OK 32 Incomplete create POST with valid form token rejected since P3-03
+OK 33 GET does not accept account or price spoofing
+PASS 33 HTTP checks. No order created.

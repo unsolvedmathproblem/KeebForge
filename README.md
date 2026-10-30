@@ -3,7 +3,7 @@
 Workshop bàn phím cho đồ án PRJ301.
 - **P1 (đã nghiệm thu):** đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
 - **P2 (đã nghiệm thu):** trang chủ đọc DB, catalog linh kiện (tìm kiếm/lọc/phân trang/ảnh dự phòng), danh sách dịch vụ & đọc đánh giá, quản trị linh kiện và quản trị dịch vụ Admin.
-- **P3 (đến P3-06):** gửi yêu cầu với giá/snapshot từ DB, transaction/chống gửi trùng; lịch sử/hủy PENDING; Admin quản lý đơn/dashboard; khách đánh giá một lần cho đơn hoàn tất và xem review trên trang dịch vụ. Chờ nghiệm thu toàn luồng P3-07.
+- **P3 (đã kiểm tra P3-07, chờ người dùng nghiệm thu):** gửi yêu cầu với giá/snapshot từ DB, transaction/chống gửi trùng; lịch sử/hủy PENDING; Admin quản lý đơn/dashboard; đánh giá một lần và public review. Đã kiểm tra toàn luồng trên Tomcat/SQL Server và Chrome, lưu báo cáo cùng 10 ảnh chụp.
 
 Thành viên nhóm: **Nguyễn Văn Lê Hào, Nguyễn Anh Tiền, Vũ Hoàng Nguyên**.
 
@@ -53,6 +53,7 @@ Mọi path ở sau context `/KeebForce`.
 - [P3-04](docs/p3-04.md): lịch sử/chi tiết theo chủ đơn, hủy PENDING và kiểm tra quyền.
 - [P3-05](docs/p3-05.md): Admin đơn/trạng thái/ghi chú, dashboard và kiểm tra đồng thời.
 - [P3-06](docs/p3-06.md): review đúng owner/completed/một lần và ghép trang dịch vụ P2.
+- [Bàn giao P3 và nghiệm thu P3-07](docs/handover-p3.md): 343 kiểm tra JDBC/HTTP, bằng chứng Chrome/SQL, ảnh desktop/mobile và giới hạn chưa kiểm tra.
 - `dist/KeebForce.war`: bản deploy.
 - `dist/KeebForce-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
   không chứa cấu hình máy hoặc mật khẩu SQL thật.

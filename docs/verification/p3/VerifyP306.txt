@@ -1,0 +1,61 @@
+﻿OK 1 DAO rejects PENDING
+OK 2 DAO rejects PROCESSING
+OK 3 DAO rejects CANCELLED
+OK 4 DAO rejects wrong owner
+OK 5 DAO rejects missing order
+OK 6 DAO rating boundary 0
+OK 7 DAO rating boundary -1
+OK 8 DAO rating boundary 6
+OK 9 DAO comment max 500
+OK 10 DAO rechecks locked account
+OK 11 One star and empty optional comment stored as NULL
+OK 12 Five stars and 500-character comment accepted
+OK 13 DAO replay cannot overwrite review
+OK 14 DB UNIQUE(OrderID) still enforces one review
+OK 15 Same customer can review another completed service order
+OK 16 P2 ServiceDAO uses shared model/fullName and service filter
+OK 17 Current catalog prices do not change order snapshots
+OK 18 UI form only for own completed unreviewed orders
+OK 19 Existing rating/comment shown without edit form
+OK 20 Anonymous review redirects to login
+OK 21 ADMIN review forbidden
+OK 22 Missing CSRF forbidden
+OK 23 Bad CSRF forbidden
+OK 24 B cannot review A with forged accountId or see A history
+OK 25 HTTP ineligible order 125
+OK 26 HTTP ineligible order 126
+OK 27 HTTP ineligible order 127
+OK 28 HTTP ineligible order 2147483647
+OK 29 HTTP invalid rating 
+OK 30 HTTP invalid rating 0
+OK 31 HTTP invalid rating -1
+OK 32 HTTP invalid rating 6
+OK 33 HTTP invalid rating 1.5
+OK 34 HTTP invalid rating 1e0
+OK 35 HTTP invalid rating abc
+OK 36 HTTP invalid rating 2147483648
+OK 37 Missing rating rejected
+OK 38 Malformed orderId 
+OK 39 Malformed orderId 0
+OK 40 Malformed orderId -1
+OK 41 Malformed orderId abc
+OK 42 Malformed orderId 2147483648
+OK 43 Duplicate orderId rejected
+OK 44 Duplicate rating rejected
+OK 45 Duplicate comment rejected
+OK 46 Duplicate action rejected
+OK 47 Long comment keeps escaped draft and selected rating
+OK 48 Review succeeds with PRG to own order
+OK 49 Review persists but leaves every order/detail/statistics value unchanged
+OK 50 Redirect reads saved review, hides form, escapes comment
+OK 51 Refresh does not repost or repeat flash
+OK 52 Duplicate HTTP review cannot overwrite
+OK 53 No edit/delete review actions
+OK 54 P2 public page reads real POST review, average and escaped server fullName/comment
+OK 55 Public DAO uses order service, not forged serviceId
+OK 56 Two concurrent submissions create exactly one review
+OK 57 Different completed orders can be reviewed concurrently
+OK 58 Locked session cannot submit review
+OK 59 Average updates after additional real reviews
+OK 60 Fixture cleanup restores all 8 table counts including reviews
+PASS 60 JDBC/HTTP checks.

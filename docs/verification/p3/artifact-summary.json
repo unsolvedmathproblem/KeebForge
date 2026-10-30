@@ -1,0 +1,18 @@
+﻿{
+    "file":  "dist/KeebForce.war",
+    "bytes":  5724958,
+    "sha256":  "F38F4F4B2569D0D218BBF3BB16DFD765F6D163EF333C73B6E8F501A0851F472E",
+    "productionClasses":  25,
+    "classMajorVersions":  [
+                               61
+                           ],
+    "jars":  [
+                 "WEB-INF/lib/jakarta.servlet.jsp.jstl-3.0.1.jar",
+                 "WEB-INF/lib/jakarta.servlet.jsp.jstl-api-3.0.2.jar",
+                 "WEB-INF/lib/mssql-jdbc-12.8.0.jre11.jar"
+             ],
+    "excludedSensitiveOrSourceEntries":  [
+
+                                         ],
+    "databaseFingerprintRestoredAfterAllTests":  true
+}

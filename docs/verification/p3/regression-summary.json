@@ -1,0 +1,39 @@
+﻿{
+    "verifiedAtUtc":  "2026-10-30T10:34:54.9233031Z",
+    "baseUrl":  "http://127.0.0.1:18080/KeebForce",
+    "results":  [
+                    {
+                        "test":  "VerifyP301",
+                        "checks":  22,
+                        "passed":  true
+                    },
+                    {
+                        "test":  "VerifyP302",
+                        "checks":  33,
+                        "passed":  true
+                    },
+                    {
+                        "test":  "VerifyP303",
+                        "checks":  64,
+                        "passed":  true
+                    },
+                    {
+                        "test":  "VerifyP304",
+                        "checks":  51,
+                        "passed":  true
+                    },
+                    {
+                        "test":  "VerifyP305",
+                        "checks":  70,
+                        "passed":  true
+                    },
+                    {
+                        "test":  "VerifyP306",
+                        "checks":  60,
+                        "passed":  true
+                    }
+                ],
+    "totalChecks":  300,
+    "databaseContentsRestored":  true,
+    "databaseFingerprint":  "ea02f057aef0444f3940e88608150ef174f6cd671f741d8cc16206d5d5548622"
+}

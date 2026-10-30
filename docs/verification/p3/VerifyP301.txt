@@ -1,0 +1,23 @@
+﻿OK 1 P1 AccountDAO bàn giao hai customer active
+OK 2 Giá seed qua DAO P2 = 2050000
+OK 3 Query khách A chỉ đọc owner A
+OK 4 Query khách B không đọc đơn A
+OK 5 Owner không có đơn trả list rỗng
+OK 6 Tên/giá dịch vụ lấy snapshot trong đơn
+OK 7 Mapping Unicode/contact/note đầy đủ
+OK 8 DATE/DATETIME2 và NULL của đơn pending
+OK 9 Đọc đủ 3 chi tiết, không nhân bản do JOIN
+OK 10 Chi tiết dùng tên/giá snapshot và subtotal BigDecimal
+OK 11 Tổng đơn fixture chính xác 2050000
+OK 12 Đơn 0 linh kiện và các cột nullable
+OK 13 Dùng đúng ServiceReview P2, fullName JOIN và completedAt
+OK 14 Admin list mọi đơn với null/rỗng
+OK 15 Cùng CreatedAt sắp OrderID DESC
+OK 16 Lọc PENDING
+OK 17 Lọc PROCESSING
+OK 18 Lọc COMPLETED
+OK 19 Lọc CANCELLED
+OK 20 Chặn status ngoài whitelist, không ghép SQL đầu vào
+OK 21 Rollback giữ nguyên số dòng 8 bảng, không DELETE/đổi catalog
+OK 22 Đóng connection và truyền SQLException, không trả list giả
+PASS 22 checks; fixtures rolled back.

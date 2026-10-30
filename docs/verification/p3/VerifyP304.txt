@@ -1,0 +1,52 @@
+﻿OK 1 DAO separates owners A/B
+OK 2 DAO loads detail snapshots despite inactive/changed catalog
+OK 3 History order is CreatedAt DESC then OrderID DESC
+OK 4 Empty customer gets empty list
+OK 5 DAO cannot cancel another owner
+OK 6 DAO cannot cancel PROCESSING
+OK 7 DAO cannot cancel COMPLETED
+OK 8 DAO cannot cancel CANCELLED again
+OK 9 DAO missing ID returns affected=false
+OK 10 DAO rechecks active customer before cancel
+OK 11 Anonymous history redirects to login
+OK 12 ADMIN cannot open customer history
+OK 13 Fresh login A sees all own history from DB, no B data
+OK 14 History renders totals, subtotals and LocalDateTime formatting
+OK 15 Snapshot/device/contact/notes escape HTML safely
+OK 16 All four statuses and zero-parts orders render
+OK 17 Only own PENDING cards have cancel forms
+OK 18 Common shell and active customer menu
+OK 19 Real empty state
+OK 20 Customer history menu hidden for ADMIN
+OK 21 GET ignores forged owner and never cancels
+OK 22 B cannot read A even with accountId query
+OK 23 Cancel missing CSRF denied
+OK 24 Cancel bad CSRF denied
+OK 25 ADMIN cancel denied by Filter
+OK 26 B cannot cancel A by forged owner parameter
+OK 27 A cannot cancel B or see B data in error response
+OK 28 HTTP rejects terminal/processing order PROCESSING
+OK 29 HTTP rejects terminal/processing order COMPLETED
+OK 30 HTTP rejects terminal/processing order CANCELLED
+OK 31 Malformed order ID 
+OK 32 Malformed order ID 0
+OK 33 Malformed order ID -1
+OK 34 Malformed order ID abc
+OK 35 Malformed order ID 1.5
+OK 36 Malformed order ID 2147483648
+OK 37 Missing order ID
+OK 38 Duplicate order ID rejected
+OK 39 Unimplemented action rejected
+OK 40 Missing order uses same conflict response
+OK 41 Owner cancels PENDING with PRG
+OK 42 Cancel changes only status, preserves every other field and detail
+OK 43 Redirect reloads current status and removes cancel button
+OK 44 Flash confirmation shown once, refresh read-only
+OK 45 Repeated cancel does not update or reopen order
+OK 46 Concurrent cancel: exactly one SQL update wins
+OK 47 Logged-out session cannot read history
+OK 48 History persists after logout/login
+OK 49 Locked customer cannot cancel with an existing session
+OK 50 History JSP protected under WEB-INF
+OK 51 Fixture cleanup restores row counts of all 8 tables
+PASS 51 JDBC/HTTP checks.

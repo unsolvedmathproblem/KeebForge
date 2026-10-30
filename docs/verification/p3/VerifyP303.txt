@@ -1,0 +1,65 @@
+﻿OK 1 Zero parts commits PENDING under server owner and service price
+OK 2 AutoCommit restored after successful create
+OK 3 DB snapshots and exact total 2050000 ignore caller prices/names
+OK 4 DAO quantity zero leaves no order
+OK 5 DAO quantity over 200 leaves no order
+OK 6 DAO duplicate product leaves no order
+OK 7 DAO inactive product leaves no order
+OK 8 DAO nonexistent product leaves no order
+OK 9 DAO inactive service leaves no order
+OK 10 DAO missing service leaves no order
+OK 11 DAO blank contact leaves no order
+OK 12 DAO invalid phone leaves no order
+OK 13 DAO oversized device description leaves no order
+OK 14 DAO past date leaves no order
+OK 15 DAO missing account leaves no order
+OK 16 DAO refuses ADMIN owner leaves no order
+OK 17 DAO refuses locked customer leaves no order
+OK 18 DAO prevents DECIMAL(18,0) total overflow leaves no order
+OK 19 Test connection has bounded lock wait
+OK 20 Real SQL Server detail INSERT timeout (1222)
+OK 21 Detail failure rolls back parent and details, restores AutoCommit
+OK 22 Connection works again after rollback
+OK 23 Catalog edits do not change committed order snapshots
+OK 24 Submit token separate from P1 CSRF
+OK 25 HTTP invalid contactName
+OK 26 HTTP invalid contactName
+OK 27 HTTP invalid contactPhone
+OK 28 HTTP invalid deviceDescription
+OK 29 HTTP invalid deviceDescription
+OK 30 HTTP invalid customerNote
+OK 31 HTTP invalid preferredDate
+OK 32 HTTP invalid preferredDate
+OK 33 HTTP invalid action
+OK 34 HTTP invalid quantity 0
+OK 35 HTTP invalid quantity 201
+OK 36 HTTP invalid quantity 1.5
+OK 37 HTTP invalid quantity 1e2
+OK 38 HTTP invalid quantity -1
+OK 39 HTTP invalid quantity 
+OK 40 HTTP duplicate product IDs
+OK 41 HTTP duplicate quantity parameter
+OK 42 HTTP duplicate service ID
+OK 43 HTTP missing quantity
+OK 44 HTTP inactive product
+OK 45 Invalid form preserves escaped inputs, quantity and unconsumed token
+OK 46 Blank contact preserves all selected parts and quantities
+OK 47 Invalid date preserves all selected parts
+OK 48 All invalid POSTs leave orders unchanged
+OK 49 No-parts valid retry uses same token and PRG to /orders
+OK 50 Successful retry creates exactly one order
+OK 51 History is rendered after redirect
+OK 52 Refresh after redirect does not insert
+OK 53 Consumed token replay rejected
+OK 54 Multi-part POST accepts valid selections
+OK 55 HTTP ignores forged owner/role/status/note/prices, persists exact DB total
+OK 56 Simultaneous double click: one success, one conflict, one DB order
+OK 57 P1 CSRF still enforced
+OK 58 Forged form token rejected
+OK 59 Service stopped after GET is rejected on POST
+OK 60 Service validation failure did not consume form token
+OK 61 ADMIN POST to request denied
+OK 62 Anonymous POST redirected to login
+OK 63 Locked account invalidates session before POST
+OK 64 Fixture cleanup restores row counts in all 8 tables
+PASS 64 JDBC/HTTP checks; fixture-only cleanup complete.

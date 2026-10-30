@@ -107,7 +107,9 @@ try {
         Check ((Send $anonymous $asset $null).Status -eq 200) "Public asset $asset"
     }
     Check ((Send $customer '/request' @{action='create'; serviceId='1'}).Status -eq 403) 'POST without CSRF rejected by P1 Filter'
-    Check ((Send $customer '/request' @{action='create'; serviceId='1'; csrf=(Token $page.Html)}).Status -eq 400) 'Incomplete create POST rejected since P3-03'
+    $currentForm = Send $customer '/request?serviceId=1' $null
+    $formToken = [regex]::Match($currentForm.Html, 'name="orderFormToken"\s+value="([^"]+)"').Groups[1].Value
+    Check ((Send $customer '/request' @{action='create'; serviceId='1'; csrf=(Token $currentForm.Html); orderFormToken=$formToken}).Status -eq 400) 'Incomplete create POST with valid form token rejected since P3-03'
     $spoof = Send $customer '/request?serviceId=1&accountId=1&role=ADMIN&totalAmount=1&contactName=FAKE' $null
     Check ($spoof.Status -eq 200 -and !$spoof.Html.Contains('value="FAKE"')) 'GET does not accept account or price spoofing'
     Write-Output "PASS $script:checks HTTP checks. No order created."
