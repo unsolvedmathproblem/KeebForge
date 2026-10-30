@@ -1,0 +1,102 @@
+/* Phần bổ sung cho form đơn, dùng màu và các thành phần chung của P1. */
+.request-main {
+    max-width: 1040px;
+}
+
+.request-service {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 24px;
+}
+
+.request-service h2 {
+    margin-top: 12px;
+}
+
+.request-description {
+    margin-bottom: 0;
+    color: var(--muted);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.request-service-price {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--green);
+}
+
+.request-service-price strong,
+.request-estimate output {
+    font-size: 1.5rem;
+}
+
+.request-section {
+    margin-bottom: 24px;
+}
+
+.request-section textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.request-part-choice {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.request-part-choice label {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.request-part-choice input {
+    flex-shrink: 0;
+}
+
+.request-part-category {
+    display: block;
+    margin: 4px 0 0 28px;
+    color: var(--muted);
+}
+
+.request-quantity {
+    min-width: 88px;
+    max-width: 112px;
+}
+
+.request-parts td {
+    /* Giữ label ẩn trong ô khi bảng cuộn ngang trên màn hình nhỏ. */
+    position: relative;
+}
+
+.request-estimate {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+    color: var(--green);
+    font-weight: 700;
+}
+
+.request-estimate[hidden] {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .request-service {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .request-estimate {
+        flex-wrap: wrap;
+    }
+}
