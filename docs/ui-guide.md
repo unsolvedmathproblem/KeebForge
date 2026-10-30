@@ -1,4 +1,4 @@
-# Dùng chung giao diện KeebForge
+# Dùng chung giao diện KeebForce
 
 Giữ nền sáng, màu xanh lá/cam, font hệ thống và Bootstrap 5.1.3 local.
 Các file dưới đây đang được dùng thật ở home, auth, profile và Admin users.
@@ -18,7 +18,7 @@ tuyệt đối `/WEB-INF/views/...`. Mẫu cấu trúc:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tên trang — KeebForge</title>
+    <title>Tên trang — KeebForce</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
 </head>
 <body class="page-body">
@@ -63,7 +63,7 @@ Mọi form POST dùng chung token do AuthFilter tạo:
 ```
 
 Khi đổi bố cục, giữ nguyên action, method, name, hidden action/id/active và csrf.
-Dùng c:url cho action/href, không viết cứng `/KeebForge/...` trong JSP.
+Dùng c:url cho action/href, không viết cứng `/KeebForce/...` trong JSP.
 Không tạo token CSRF thứ hai. Không đổi mutation sang GET.
 
 ## Tiền VND bằng custom tag

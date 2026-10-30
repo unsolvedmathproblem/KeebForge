@@ -49,8 +49,8 @@ Tổng project hiện có **18 class Java production** (7 class P1 + 11 class P2
 
 ## 3. Artifact và kiểm chứng cuối
 
-- `dist/KeebForge.war`: **5.625.336 bytes**
-- SHA-256 WAR: `B09841FFFD1A2BC1C3A5CBFC933350D57EC87CDA60F3FF959BC952BD93D8C499`
+- `dist/KeebForce.war`: **5.625.336 bytes**
+- SHA-256 WAR: `1ADD9566E9A8FD5AFA6EE3F5389749B4A387B14ADEE20F7CC47CFC893524955A`
 
 | Hạng mục kiểm tra | Kết quả thực tế |
 | --- | --- |
@@ -65,7 +65,7 @@ Tổng project hiện có **18 class Java production** (7 class P1 + 11 class P2
 
 ## 4. Giới hạn và hướng dẫn chụp ảnh báo cáo
 
-- **Chưa chụp ảnh màn hình trình duyệt tự động**: môi trường CLI không gắn công cụ điều khiển trình duyệt đồ họa, nên chưa chụp screenshot trực quan desktop/mobile. Thành viên mở dự án trên trình duyệt (`http://localhost:8080/KeebForge`) để chụp ảnh báo cáo cho các màn hình P2:
+- **Chưa chụp ảnh màn hình trình duyệt tự động**: môi trường CLI không gắn công cụ điều khiển trình duyệt đồ họa, nên chưa chụp screenshot trực quan desktop/mobile. Thành viên mở dự án trên trình duyệt (`http://localhost:8080/KeebForce`) để chụp ảnh báo cáo cho các màn hình P2:
   1. Trang chủ `/home` (danh sách dịch vụ & linh kiện tiêu biểu từ DB).
   2. Catalog linh kiện `/parts` (tìm kiếm, lọc danh mục/thương hiệu, phân trang).
   3. Trang dịch vụ `/services` và khu vực đánh giá `#reviews`.

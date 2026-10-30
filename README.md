@@ -1,4 +1,4 @@
-# KeebForge — Assignment
+# KeebForce — Assignment
 
 Workshop bàn phím cho đồ án PRJ301.
 - **P1 (đã nghiệm thu):** đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
@@ -14,10 +14,10 @@ Thành viên nhóm: **Nguyễn Văn Lê Hào, Nguyễn Anh Tiền, Vũ Hoàng Ng
    `database/01_create_database.sql`, `02_schema.sql`, `03_seed.sql`.
    Máy đã có DB/dữ liệu thì không chạy lại các script tạo/seed; dùng `04_verify.sql`.
 3. Copy `config/db.properties.example` (SQL login) hoặc `db-windows.properties.example`
-   thành **TOMCAT_BASE/conf/keebforge-db.properties** rồi điền cấu hình máy bạn.
+   thành **TOMCAT_BASE/conf/keebforce-db.properties** rồi điền cấu hình máy bạn.
    Windows auth cần DLL/setenv theo [docs/setup.md](docs/setup.md).
    DBContext tự đọc file này; không cần đặt VM Option cho đường dẫn DB.
-4. Clean and Build rồi Run Project. Mở `http://localhost:8080/KeebForge/`.
+4. Clean and Build rồi Run Project. Mở `http://localhost:8080/KeebForce/`.
 
 Ant đi kèm NetBeans trên máy hiện tại:
 
@@ -39,7 +39,7 @@ Giữ metadata `nbproject` dùng chung để thành viên khác mở/build proje
 Đây là tài khoản website giả lập, không phải SQL Server login.
 Các route hiện có: `/home`, `/parts`, `/services`, `/login`, `/register`, `/profile`,
 POST `/logout`, `/admin/products`, `/admin/services`, `/admin/users`.
-Mọi path ở sau context `/KeebForge`.
+Mọi path ở sau context `/KeebForce`.
 
 ## Tài liệu và bản bàn giao
 
@@ -47,8 +47,8 @@ Mọi path ở sau context `/KeebForge`.
 - [UI dùng chung](docs/ui-guide.md): JSP include, CSS, message, CSRF và money.tag.
 - [Báo cáo bàn giao P1](docs/handover-p1.md): kiểm tra cuối, artifact và giới hạn P1.
 - [Báo cáo bàn giao P2](docs/handover-p2.md): model/getter/DAO bàn giao cho P3, kết quả kiểm tra và hướng dẫn chụp ảnh P2.
-- `dist/KeebForge.war`: bản deploy.
-- `dist/KeebForge-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
+- `dist/KeebForce.war`: bản deploy.
+- `dist/KeebForce-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
   không chứa cấu hình máy hoặc mật khẩu SQL thật.
 
 Kiến trúc: Servlet gọi DAO trực tiếp, Account JavaBean và JSP/JSTL.
