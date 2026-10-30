@@ -2,6 +2,8 @@ package controller;
 
 import dao.ProductDAO;
 import dao.ServiceDAO;
+import dao.OrderDAO;
+import controller.orders.OrderSupport;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,13 +14,22 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import model.Account;
 import model.Product;
 import model.WorkshopService;
+import model.Order;
+import model.OrderDetail;
 
-/** P3-02: đọc form yêu cầu; xử lý POST và lưu đơn thuộc bước tiếp theo. */
-@WebServlet(name = "OrderServlet", urlPatterns = {"/request"})
+/** Form và tạo đơn; lịch sử/hủy đơn được bổ sung ở P3-04. */
+@WebServlet(name = "OrderServlet", urlPatterns = {"/request", "/orders"})
 public class OrderServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -39,15 +50,132 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
+        if ("/orders".equals(request.getServletPath())) {
+            Object receipt = session.getAttribute("createdOrder");
+            if (receipt instanceof Order && ((Order) receipt).getAccountId() == user.getAccountId()) {
+                request.setAttribute("createdOrder", receipt);
+            }
+            request.setAttribute("page", "orders");
+            request.getRequestDispatcher("/WEB-INF/views/request-history.jsp").forward(request, response);
+            return;
+        }
+
         Integer serviceId = parseServiceId(request.getParameterValues("serviceId"));
         if (serviceId == null) {
             reject(request, response, 400, "Vui lòng chọn một dịch vụ hợp lệ từ trang dịch vụ.");
             return;
         }
+        loadForm(request, response, user, serviceId, true);
+        render(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (!"/request".equals(request.getServletPath())) {
+            response.sendError(405);
+            return;
+        }
+        HttpSession session = request.getSession(false);
+        Account user = session != null && session.getAttribute("user") instanceof Account
+                ? (Account) session.getAttribute("user") : null;
+        if (user == null || !"CUSTOMER".equals(user.getRole()) || !user.isActive()) {
+            reject(request, response, 403, "Bạn không có quyền gửi yêu cầu dịch vụ.");
+            return;
+        }
+        Order input = new Order();
+        Set<Integer> selectedIds = new LinkedHashSet<>();
+        Map<Integer, String> quantities = new HashMap<>();
+        request.setAttribute("selectedPartIds", selectedIds);
+        request.setAttribute("quantities", quantities);
+        for (String name : List.of("contactName", "contactPhone", "deviceDescription", "customerNote")) {
+            request.setAttribute(name, request.getParameter(name));
+        }
+        request.setAttribute("preferredDateInput", request.getParameter("preferredDate"));
+        try {
+            input.setServiceId(OrderSupport.positiveInt(
+                    OrderSupport.parameter(request, "serviceId", true), "Mã dịch vụ"));
+            if (!"create".equals(OrderSupport.parameter(request, "action", true))) {
+                throw new IllegalArgumentException("Thao tác biểu mẫu không hợp lệ.");
+            }
+            input.setContactName(OrderSupport.parameter(request, "contactName", false));
+            input.setContactPhone(OrderSupport.parameter(request, "contactPhone", false));
+            input.setDeviceDescription(OrderSupport.parameter(request, "deviceDescription", false));
+            input.setCustomerNote(OrderSupport.parameter(request, "customerNote", false));
+            List<OrderDetail> parts = new ArrayList<>();
+            String[] productIds = request.getParameterValues("productIds");
+            if (productIds != null) {
+                for (String rawId : productIds) {
+                    int productId = OrderSupport.positiveInt(rawId, "Mã linh kiện");
+                    if (!selectedIds.add(productId)) {
+                        throw new IllegalArgumentException("Không chọn trùng một linh kiện trong yêu cầu.");
+                    }
+                    quantities.put(productId, request.getParameter("quantity_" + productId));
+                }
+                // Thu draft của mọi dòng trước khi kiểm tra, để lỗi một ô không mất các lựa chọn khác.
+                for (int productId : selectedIds) {
+                    String rawQuantity = OrderSupport.parameter(request, "quantity_" + productId, true);
+                    int quantity = OrderSupport.positiveInt(rawQuantity, "Số lượng");
+                    if (quantity > 200) {
+                        throw new IllegalArgumentException("Số lượng mỗi linh kiện phải từ 1 đến 200.");
+                    }
+                    OrderDetail detail = new OrderDetail();
+                    detail.setProductId(productId);
+                    detail.setQuantity(quantity);
+                    parts.add(detail);
+                }
+            }
+            String date = OrderSupport.parameter(request, "preferredDate", false);
+            if (!date.isBlank()) {
+                try {
+                    input.setPreferredDate(LocalDate.parse(date));
+                } catch (DateTimeParseException ex) {
+                    throw new IllegalArgumentException("Ngày mong muốn không đúng định dạng ngày hợp lệ.");
+                }
+            }
+            String formToken = OrderSupport.parameter(request, "orderFormToken", false);
+            synchronized (session) {
+                if (!OrderSupport.validFormToken(session, formToken)) {
+                    reject(request, response, 409, "Biểu mẫu đã gửi hoặc đã được thay thế. Vui lòng kiểm tra xác nhận hoặc mở lại dịch vụ.");
+                    return;
+                }
+                try (OrderDAO dao = new OrderDAO()) {
+                    dao.createOrder(input, parts, user.getAccountId());
+                } catch (SQLException ex) {
+                    if (input.getOrderId() == 0) {
+                        throw ex;
+                    }
+                    // Commit đã thành công nhưng khôi phục/đóng connection lỗi: không cho tạo lại.
+                    getServletContext().log("Đơn đã commit nhưng đóng connection có lỗi.", ex);
+                }
+                session.removeAttribute("orderFormToken");
+                session.setAttribute("createdOrder", input);
+            }
+            response.sendRedirect(request.getContextPath() + "/orders");
+            return;
+        } catch (IllegalArgumentException ex) {
+            response.setStatus(400);
+            request.setAttribute("errorMessage", ex.getMessage());
+        } catch (SQLException ex) {
+            getServletContext().log("Không thể lưu yêu cầu dịch vụ.", ex);
+            response.setStatus(503);
+            request.setAttribute("errorMessage", "Chưa thể lưu yêu cầu lúc này. Vui lòng thử lại sau.");
+        }
+        if (input.getServiceId() > 0) {
+            loadForm(request, response, user, input.getServiceId(), false);
+        }
+        render(request, response);
+    }
+
+    private void loadForm(HttpServletRequest request, HttpServletResponse response, Account user,
+            int serviceId, boolean newForm) {
         try (ServiceDAO services = new ServiceDAO()) {
             WorkshopService selectedService = services.getById(serviceId);
             if (selectedService == null || !selectedService.isActive()) {
-                reject(request, response, 404, "Dịch vụ không tồn tại hoặc hiện đã ngừng nhận yêu cầu.");
+                if (response.getStatus() == 200) {
+                    response.setStatus(404);
+                }
+                request.setAttribute("errorMessage", "Dịch vụ không tồn tại hoặc hiện đã ngừng nhận yêu cầu.");
                 return;
             }
             List<Product> products;
@@ -56,18 +184,28 @@ public class OrderServlet extends HttpServlet {
             }
             request.setAttribute("selectedService", selectedService);
             request.setAttribute("products", products);
-            request.setAttribute("contactName", user.getFullName());
-            request.setAttribute("contactPhone", user.getPhone());
+            if (newForm) {
+                request.setAttribute("contactName", user.getFullName());
+                request.setAttribute("contactPhone", user.getPhone());
+            }
+            if (request.getAttribute("selectedPartIds") == null) {
+                request.setAttribute("selectedPartIds", new HashSet<Integer>());
+                request.setAttribute("quantities", new HashMap<Integer, String>());
+            }
             request.setAttribute("today", LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")).toString());
+            HttpSession session = request.getSession(false);
+            synchronized (session) {
+                request.setAttribute("orderFormToken", newForm ? OrderSupport.issueFormToken(session)
+                        : session.getAttribute("orderFormToken"));
+            }
         } catch (SQLException ex) {
             getServletContext().log("Không thể tải biểu mẫu yêu cầu dịch vụ.", ex);
             // Không hiển thị form với catalog thiếu hoặc dữ liệu giả khi DB lỗi.
             request.removeAttribute("selectedService");
             request.removeAttribute("products");
-            reject(request, response, 503, "Chưa thể tải biểu mẫu lúc này. Vui lòng thử lại sau.");
-            return;
+            response.setStatus(503);
+            request.setAttribute("errorMessage", "Chưa thể tải biểu mẫu lúc này. Vui lòng thử lại sau.");
         }
-        render(request, response);
     }
 
     private Integer parseServiceId(String[] values) {

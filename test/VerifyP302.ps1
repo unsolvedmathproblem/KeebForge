@@ -75,7 +75,7 @@ try {
     Check ($page.Html -match 'name="quantity_1" min="1" max="200" step="1"') 'Per-product quantity contract'
     $today = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow, 'SE Asia Standard Time').ToString('yyyy-MM-dd')
     Check ($page.Html.Contains("min=`"$today`"")) 'Preferred date starts today in Vietnam'
-    Check ($page.Html -match 'type="submit"[^>]+disabled' -and $page.Html.Contains('Tổng ước tính')) 'Submission disabled at GET-only step'
+    Check ($page.Html -match 'type="submit"[^>]+aria-describedby="estimate-help"' -and $page.Html.Contains('Tổng ước tính')) 'Submission enabled since P3-03, estimate retained'
     Check (([regex]::Matches($page.Html, '<header\b')).Count -eq 1 -and
         ([regex]::Matches($page.Html, '<main\b')).Count -eq 1 -and
         ([regex]::Matches($page.Html, '<footer\b')).Count -eq 1 -and $page.Html.Contains('Assignment')) 'Shared layout and footer'
@@ -107,7 +107,7 @@ try {
         Check ((Send $anonymous $asset $null).Status -eq 200) "Public asset $asset"
     }
     Check ((Send $customer '/request' @{action='create'; serviceId='1'}).Status -eq 403) 'POST without CSRF rejected by P1 Filter'
-    Check ((Send $customer '/request' @{action='create'; serviceId='1'; csrf=(Token $page.Html)}).Status -eq 405) 'POST not implemented before P3-03'
+    Check ((Send $customer '/request' @{action='create'; serviceId='1'; csrf=(Token $page.Html)}).Status -eq 400) 'Incomplete create POST rejected since P3-03'
     $spoof = Send $customer '/request?serviceId=1&accountId=1&role=ADMIN&totalAmount=1&contactName=FAKE' $null
     Check ($spoof.Status -eq 200 -and !$spoof.Html.Contains('value="FAKE"')) 'GET does not accept account or price spoofing'
     Write-Output "PASS $script:checks HTTP checks. No order created."

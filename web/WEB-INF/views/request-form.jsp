@@ -35,6 +35,7 @@
         <form id="request-form" action="<c:url value='/request'/>" method="post">
             <input type="hidden" name="csrf" value="<c:out value='${sessionScope.csrfToken}'/>">
             <input type="hidden" name="action" value="create">
+            <input type="hidden" name="orderFormToken" value="<c:out value='${orderFormToken}'/>">
             <input type="hidden" name="serviceId" value="<c:out value='${selectedService.serviceId}'/>">
 
             <section class="auth-panel request-section" aria-labelledby="contact-title">
@@ -65,20 +66,20 @@
                     <label for="deviceDescription">Mô tả thiết bị</label>
                     <textarea class="form-control" id="deviceDescription" name="deviceDescription" rows="4"
                               maxlength="1000" required aria-describedby="deviceDescription-help"
-                              placeholder="Tên bàn phím hoặc kit, tình trạng hiện tại và công việc bạn mong muốn..."></textarea>
+                              placeholder="Tên bàn phím hoặc kit, tình trạng hiện tại và công việc bạn mong muốn..."><c:out value="${deviceDescription}" /></textarea>
                     <small id="deviceDescription-help">Bắt buộc, tối đa 1000 ký tự. Đồ tự mang theo chỉ cần mô tả tại đây.</small>
                 </div>
                 <div class="form-field">
                     <label for="preferredDate">Ngày mong muốn <span class="optional-label">(tùy chọn)</span></label>
                     <input class="form-control" type="date" id="preferredDate" name="preferredDate"
-                           min="<c:out value='${today}'/>" aria-describedby="preferredDate-help">
+                           min="<c:out value='${today}'/>" value="<c:out value='${preferredDateInput}'/>" aria-describedby="preferredDate-help">
                     <small id="preferredDate-help">Từ hôm nay theo giờ Việt Nam. Ngày tham khảo để workshop trao đổi, chưa phải lịch hẹn đã xác nhận.</small>
                 </div>
                 <div class="form-field">
                     <label for="customerNote">Ghi chú thêm <span class="optional-label">(tùy chọn)</span></label>
                     <textarea class="form-control" id="customerNote" name="customerNote" rows="3"
                               maxlength="1000" aria-describedby="customerNote-help"
-                              placeholder="Linh kiện tự mang, thời gian tiện liên hệ hoặc lưu ý khác..."></textarea>
+                              placeholder="Linh kiện tự mang, thời gian tiện liên hệ hoặc lưu ý khác..."><c:out value="${customerNote}" /></textarea>
                     <small id="customerNote-help">Tối đa 1000 ký tự.</small>
                 </div>
             </section>
@@ -101,7 +102,7 @@
                                         <td>
                                             <div class="request-part-choice">
                                                 <input class="form-check-input" type="checkbox" id="part-${product.productId}"
-                                                       name="productIds" value="<c:out value='${product.productId}'/>">
+                                                       name="productIds" value="<c:out value='${product.productId}'/>" ${selectedPartIds.contains(product.productId) ? 'checked' : ''}>
                                                 <label for="part-${product.productId}"><c:out value="${product.productName}" /></label>
                                             </div>
                                             <small class="request-part-category"><c:out value="${product.categoryName}" /> · <c:out value="${product.brandName}" /></small>
@@ -110,7 +111,8 @@
                                         <td>
                                             <label class="visually-hidden" for="quantity-${product.productId}">Số lượng <c:out value="${product.productName}" /></label>
                                             <input class="form-control request-quantity" type="number" id="quantity-${product.productId}"
-                                                   name="quantity_${product.productId}" min="1" max="200" step="1" value="1" required>
+                                                   name="quantity_${product.productId}" min="1" max="200" step="1"
+                                                   value="<c:out value="${quantities.containsKey(product.productId) ? quantities[product.productId] : '1'}"/>" required>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -129,10 +131,12 @@
                 </div>
                 <p id="estimate-help" class="panel-description">Tổng ước tính gồm tiền công và linh kiện đã chọn. Giá lưu khi gửi yêu cầu sẽ được tính lại theo giá hiện tại của workshop.</p>
                 <noscript><p>Tiền công và đơn giá hiển thị ở trên. Bật JavaScript để tính tổng ước tính khi chọn linh kiện.</p></noscript>
-                <p id="submit-help">Hiện chưa mở gửi yêu cầu trực tuyến. Bạn có thể tham khảo giá và chuẩn bị thông tin trên biểu mẫu.</p>
-                <button type="submit" class="btn btn-workshop" disabled aria-describedby="submit-help estimate-help">Gửi yêu cầu</button>
+                <button type="submit" class="btn btn-workshop" aria-describedby="estimate-help">Gửi yêu cầu</button>
             </section>
         </form>
+    </c:if>
+    <c:if test="${empty selectedService and not empty sessionScope.createdOrder}">
+        <p><a class="text-link" href="<c:url value='/orders'/>">Xem xác nhận yêu cầu vừa gửi</a></p>
     </c:if>
     <a class="text-link" href="<c:url value='/services'/>">← Quay lại chọn dịch vụ</a>
 </main>
