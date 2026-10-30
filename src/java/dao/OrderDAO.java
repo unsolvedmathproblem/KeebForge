@@ -205,6 +205,32 @@ public class OrderDAO extends DBContext {
         }
     }
 
+    /** Một lần ghi có đủ owner/status/NOT EXISTS; UNIQUE(OrderID) vẫn là hàng rào cuối. */
+    public boolean insertReview(int orderId, int accountId, int rating, String comment) throws SQLException {
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("Điểm đánh giá phải từ 1 đến 5 sao.");
+        }
+        String text = checkedText(comment, 500, false, "Bình luận");
+        String sql = "INSERT INTO dbo.ServiceReview (OrderID, Rating, Comment) "
+                + "SELECT o.OrderID, ?, ? FROM dbo.ServiceOrder AS o "
+                + "WHERE o.OrderID = ? AND o.AccountID = ? AND o.OrderStatus = 'COMPLETED' "
+                + "AND EXISTS (SELECT 1 FROM dbo.UserAccount WHERE AccountID = o.AccountID "
+                + "AND Role = 'CUSTOMER' AND IsActive = 1) "
+                + "AND NOT EXISTS (SELECT 1 FROM dbo.ServiceReview WITH (UPDLOCK, HOLDLOCK) WHERE OrderID = o.OrderID)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, rating);
+            statement.setNString(2, text);
+            statement.setInt(3, orderId);
+            statement.setInt(4, accountId);
+            return statement.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == 2601 || ex.getErrorCode() == 2627) {
+                return false;
+            }
+            throw ex;
+        }
+    }
+
     /** Caller đã kiểm tra ADMIN ở Filter/Servlet; trạng thái nguồn kiểm tra ngay tại UPDATE. */
     public boolean updateStatus(int orderId, String newStatus) throws SQLException {
         String source;

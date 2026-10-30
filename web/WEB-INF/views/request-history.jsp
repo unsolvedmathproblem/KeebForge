@@ -93,6 +93,44 @@
                         </form>
                     </c:if>
                 </div>
+                <c:if test="${order.orderStatus eq 'COMPLETED' or not empty order.review}">
+                    <section class="order-review" aria-labelledby="review-title-${order.orderId}">
+                        <h3 id="review-title-${order.orderId}">Đánh giá dịch vụ</h3>
+                        <c:choose>
+                            <c:when test="${not empty order.review}">
+                                <p class="review-rating" aria-label="Đánh giá ${order.review.rating} trên 5 sao">
+                                    <span aria-hidden="true"><c:forEach begin="1" end="5" var="star">${star le order.review.rating ? '★' : '☆'}</c:forEach></span>
+                                    (<c:out value="${order.review.rating}" />/5)
+                                </p>
+                                <p class="review-comment"><c:out value="${empty order.review.comment ? 'Bạn không để lại bình luận.' : order.review.comment}" /></p>
+                                <p class="user-detail">Đã gửi lúc <c:out value="${order.review.createdAt.format(dateTimeFormat)}" /></p>
+                            </c:when>
+                            <c:otherwise>
+                                <p>Chia sẻ trải nghiệm sau khi hoàn tất dịch vụ. Mỗi yêu cầu được đánh giá một lần.</p>
+                                <form action="<c:url value='/orders'/>" method="post">
+                                    <input type="hidden" name="csrf" value="<c:out value='${sessionScope.csrfToken}'/>">
+                                    <input type="hidden" name="action" value="review">
+                                    <input type="hidden" name="orderId" value="<c:out value='${order.orderId}'/>">
+                                    <div class="form-field order-review-rating">
+                                        <label for="rating-${order.orderId}">Điểm đánh giá — #<c:out value="${order.orderId}" /></label>
+                                        <select class="form-control" id="rating-${order.orderId}" name="rating" required>
+                                            <option value="">Chọn số sao</option>
+                                            <c:forEach begin="1" end="5" var="score"><option value="${score}" ${reviewOrderId eq order.orderId and ratingInput eq score.toString() ? 'selected' : ''}>${score} sao</option></c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="comment-${order.orderId}">Bình luận <span class="optional-label">(tùy chọn)</span></label>
+                                        <textarea class="form-control" id="comment-${order.orderId}" name="comment" rows="3" maxlength="500" aria-describedby="comment-help-${order.orderId}"><c:out value="${reviewOrderId eq order.orderId ? commentInput : ''}" /></textarea>
+                                        <small id="comment-help-${order.orderId}">Tối đa 500 ký tự. Nhận xét sẽ hiển thị cùng tên của bạn trên trang dịch vụ.</small>
+                                    </div>
+                                    <button class="btn btn-workshop" type="submit">Gửi đánh giá</button>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:url var="serviceReviewsUrl" value="/services"><c:param name="id" value="${order.serviceId}" /></c:url>
+                        <p class="order-review-link"><a class="text-link" href="<c:out value='${serviceReviewsUrl}'/>#reviews">Xem đánh giá trên trang dịch vụ</a></p>
+                    </section>
+                </c:if>
             </article>
         </c:forEach>
     </c:if>

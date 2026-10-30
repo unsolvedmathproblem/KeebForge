@@ -206,6 +206,29 @@
     gap: 24px;
 }
 
+.order-review {
+    border-top: 1px solid var(--line);
+    margin-top: 24px;
+    padding-top: 24px;
+}
+
+.order-review-rating {
+    max-width: 240px;
+}
+
+.order-review textarea {
+    resize: vertical;
+}
+
+.order-review .review-comment {
+    white-space: pre-wrap;
+}
+
+.order-review-link {
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+
 .order-stat h2 {
     font-size: 1.05rem;
 }

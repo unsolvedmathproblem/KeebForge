@@ -217,7 +217,7 @@ public class VerifyP304 extends OrderDAO {
         }
         check(post(a, pairs("action", "cancel", "csrf", csrfA)).statusCode() == 400, "Missing order ID");
         check(post(a, cancelBody(pending, csrfA) + "&" + pairs("orderId", otherPending)).statusCode() == 400, "Duplicate order ID rejected");
-        check(post(a, pairs("action", "review", "orderId", completed, "csrf", csrfA)).statusCode() == 400, "Unimplemented action rejected");
+        check(post(a, pairs("action", "editReview", "orderId", completed, "csrf", csrfA)).statusCode() == 400, "Unimplemented action rejected");
         check(post(a, cancelBody(Integer.MAX_VALUE, csrfA)).statusCode() == 409, "Missing order uses same conflict response");
         String unchanged = fingerprint(pending);
         HttpResponse<String> success = post(a, cancelBody(pending, csrfA));

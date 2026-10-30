@@ -29,7 +29,7 @@ import model.WorkshopService;
 import model.Order;
 import model.OrderDetail;
 
-/** Form, tạo đơn và lịch sử/hủy PENDING của tài khoản đăng nhập. */
+/** Form, tạo đơn và lịch sử/hủy/đánh giá của tài khoản đăng nhập. */
 @WebServlet(name = "OrderServlet", urlPatterns = {"/request", "/orders"})
 public class OrderServlet extends HttpServlet {
 
@@ -76,7 +76,11 @@ public class OrderServlet extends HttpServlet {
             return;
         }
         if ("/orders".equals(request.getServletPath())) {
-            cancelOrder(request, response, user);
+            if ("review".equals(request.getParameter("action"))) {
+                reviewOrder(request, response, user);
+            } else {
+                cancelOrder(request, response, user);
+            }
             return;
         }
         Order input = new Order();
@@ -161,6 +165,46 @@ public class OrderServlet extends HttpServlet {
             loadForm(request, response, user, input.getServiceId(), false);
         }
         render(request, response);
+    }
+
+    private void reviewOrder(HttpServletRequest request, HttpServletResponse response, Account user)
+            throws ServletException, IOException {
+        try {
+            if (!"review".equals(OrderSupport.parameter(request, "action", true))) {
+                throw new IllegalArgumentException("Thao tác đánh giá không hợp lệ.");
+            }
+            int orderId = OrderSupport.positiveInt(OrderSupport.parameter(request, "orderId", true), "Mã đơn");
+            request.setAttribute("reviewOrderId", orderId);
+            request.setAttribute("ratingInput", request.getParameter("rating"));
+            request.setAttribute("commentInput", request.getParameter("comment"));
+            int rating = OrderSupport.positiveInt(OrderSupport.parameter(request, "rating", true), "Số sao");
+            if (rating > 5) {
+                throw new IllegalArgumentException("Điểm đánh giá phải từ 1 đến 5 sao.");
+            }
+            String comment = OrderSupport.parameter(request, "comment", false);
+            boolean inserted;
+            try (OrderDAO dao = new OrderDAO()) {
+                inserted = dao.insertReview(orderId, user.getAccountId(), rating, comment);
+            }
+            if (inserted) {
+                HttpSession session = request.getSession(false);
+                synchronized (session) {
+                    session.setAttribute("orderMessage", "Đã gửi đánh giá cho yêu cầu #" + orderId + ".");
+                }
+                response.sendRedirect(request.getContextPath() + "/orders#order-" + orderId);
+                return;
+            }
+            response.setStatus(409);
+            request.setAttribute("errorMessage", "Chỉ có thể đánh giá một lần cho đơn đã hoàn tất của chính bạn.");
+        } catch (IllegalArgumentException ex) {
+            response.setStatus(400);
+            request.setAttribute("errorMessage", ex.getMessage());
+        } catch (SQLException ex) {
+            getServletContext().log("Không thể lưu đánh giá dịch vụ.", ex);
+            response.setStatus(503);
+            request.setAttribute("errorMessage", "Chưa thể lưu đánh giá lúc này. Vui lòng thử lại sau.");
+        }
+        showHistory(request, response, user);
     }
 
     private void cancelOrder(HttpServletRequest request, HttpServletResponse response, Account user)
