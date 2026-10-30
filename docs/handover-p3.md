@@ -1,7 +1,7 @@
 # Bàn giao P3 — dịch vụ và quản lý đơn
 
 Ngày kiểm tra: **30/10/2026**. P3-01 đến P3-07 đã triển khai và kiểm tra;
-**chờ người dùng xác nhận nghiệm thu P3**. P1/P2 có đủ phần bàn giao để tích hợp.
+**người dùng đã xác nhận nghiệm thu P3 ngày 30/10/2026**. P1/P2 có đủ phần bàn giao để tích hợp.
 Lượt P3-07 chỉ bổ sung kiểm tra, bằng chứng và tài liệu; không sửa mã chạy ứng dụng.
 
 ## Chức năng đã ghép
@@ -158,5 +158,6 @@ Ghi chú Admin hiện tại có thể được lần lưu sau ghi đè, đúng p
 Đã đối chiếu đủ 8 mục acceptance của requirement P3: package đơn giản; form một
 service/0..n product; giá/snapshot/transaction; owner/role; bốn trạng thái; note/dashboard;
 review/HTML/CSRF/PreparedStatement; báo cáo và bằng chứng thật. Đây là kết quả kiểm tra
-của người thực hiện, **chưa thay thế xác nhận nghiệm thu của người dùng**.
-Không git add/commit/push/PR. Dừng tại P3-07 và chờ xác nhận nghiệm thu P3.
+của người thực hiện; người dùng đã xác nhận “xác nhận nghiệm thu p3” sau khi sửa
+lỗi ký hiệu tiền ở form yêu cầu. Các giới hạn kiểm tra nêu trên vẫn được giữ nguyên.
+Không git add/commit/push/PR. P3 kết thúc ngày 30/10/2026.

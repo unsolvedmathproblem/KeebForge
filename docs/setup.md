@@ -1,8 +1,8 @@
 # Chạy KeebForce — P1, P2 và P3
 
 **P1 đã được người dùng nghiệm thu và kết thúc ngày 28/10/2026.**
-P2 đã nghiệm thu; P3 đã hoàn tất kiểm tra P3-07 ngày 30/10/2026 và chờ người dùng
-xác nhận nghiệm thu. Xem [bàn giao P2](handover-p2.md) và [bàn giao P3](handover-p3.md)
+P2 đã nghiệm thu; P3 đã được người dùng xác nhận nghiệm thu ngày 30/10/2026.
+Xem [bàn giao P2](handover-p2.md) và [bàn giao P3](handover-p3.md)
 cho catalog, đơn/review và kết quả kiểm tra mới nhất. Các mục ghi P1 bên dưới giữ
 lại làm lịch sử bàn giao nền tảng.
 

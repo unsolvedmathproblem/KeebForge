@@ -3,7 +3,7 @@
 Workshop bàn phím cho đồ án PRJ301.
 - **P1 (đã nghiệm thu):** đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
 - **P2 (đã nghiệm thu):** trang chủ đọc DB, catalog linh kiện (tìm kiếm/lọc/phân trang/ảnh dự phòng), danh sách dịch vụ & đọc đánh giá, quản trị linh kiện và quản trị dịch vụ Admin.
-- **P3 (đã kiểm tra P3-07, chờ người dùng nghiệm thu):** gửi yêu cầu với giá/snapshot từ DB, transaction/chống gửi trùng; lịch sử/hủy PENDING; Admin quản lý đơn/dashboard; đánh giá một lần và public review. Đã kiểm tra toàn luồng trên Tomcat/SQL Server và Chrome, lưu báo cáo cùng 10 ảnh chụp.
+- **P3 (đã nghiệm thu ngày 30/10/2026):** gửi yêu cầu với giá/snapshot từ DB, transaction/chống gửi trùng; lịch sử/hủy PENDING; Admin quản lý đơn/dashboard; đánh giá một lần và public review. Đã kiểm tra toàn luồng trên Tomcat/SQL Server và Chrome, lưu báo cáo cùng 10 ảnh chụp.
 
 Thành viên nhóm: **Nguyễn Văn Lê Hào, Nguyễn Anh Tiền, Vũ Hoàng Nguyên**.
 
