@@ -9,7 +9,7 @@
     <title>Yêu cầu dịch vụ — KeebForce</title>
     <jsp:include page="/WEB-INF/views/common/styles.jsp" />
     <link rel="stylesheet" href="<c:url value='/css/orders.css'/>">
-    <script src="<c:url value='/js/orders.js'/>" defer></script>
+    <script src="<c:url value='/js/orders.js'><c:param name='v' value='2'/></c:url>" defer></script>
 </head>
 <body class="page-body">
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
