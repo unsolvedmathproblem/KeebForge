@@ -189,6 +189,20 @@ public class OrderDAO extends DBContext {
         return text.isEmpty() ? null : text;
     }
 
+    /** Hủy đúng owner và trạng thái trong một UPDATE; không xóa đơn hay chi tiết. */
+    public boolean cancelPending(int orderId, int accountId) throws SQLException {
+        String sql = "UPDATE dbo.ServiceOrder SET OrderStatus = 'CANCELLED' "
+                + "WHERE OrderID = ? AND AccountID = ? AND OrderStatus = 'PENDING' "
+                + "AND EXISTS (SELECT 1 FROM dbo.UserAccount WHERE AccountID = ? "
+                + "AND Role = 'CUSTOMER' AND IsActive = 1)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, orderId);
+            statement.setInt(2, accountId);
+            statement.setInt(3, accountId);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
     /** accountId phải lấy từ session.user, không lấy từ tham số trình duyệt. */
     public List<Order> getOrdersByAccount(int accountId) throws SQLException {
         String sql = "SELECT " + COLUMNS + " FROM dbo.ServiceOrder WHERE AccountID = ? "

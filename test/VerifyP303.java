@@ -256,9 +256,9 @@ public class VerifyP303 extends OrderDAO {
         check(success.statusCode() == 302 && success.headers().firstValue("location").orElse("").endsWith("/orders"),
                 "No-parts valid retry uses same token and PRG to /orders");
         check(ownerCount() == before + 1, "Successful retry creates exactly one order");
-        HttpResponse<String> receipt = get(client, "/orders");
-        check(receipt.statusCode() == 200 && receipt.body().contains("200.000") && receipt.body().contains(marker),
-                "Receipt is rendered after redirect");
+        HttpResponse<String> history = get(client, "/orders");
+        check(history.statusCode() == 200 && history.body().contains("200.000") && history.body().contains(marker),
+                "History is rendered after redirect");
         get(client, "/orders");
         check(ownerCount() == before + 1, "Refresh after redirect does not insert");
         check(post(client, body(base)).statusCode() == 409 && ownerCount() == before + 1, "Consumed token replay rejected");

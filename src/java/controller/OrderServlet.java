@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,7 +29,7 @@ import model.WorkshopService;
 import model.Order;
 import model.OrderDetail;
 
-/** Form và tạo đơn; lịch sử/hủy đơn được bổ sung ở P3-04. */
+/** Form, tạo đơn và lịch sử/hủy PENDING của tài khoản đăng nhập. */
 @WebServlet(name = "OrderServlet", urlPatterns = {"/request", "/orders"})
 public class OrderServlet extends HttpServlet {
 
@@ -51,12 +52,7 @@ public class OrderServlet extends HttpServlet {
         }
 
         if ("/orders".equals(request.getServletPath())) {
-            Object receipt = session.getAttribute("createdOrder");
-            if (receipt instanceof Order && ((Order) receipt).getAccountId() == user.getAccountId()) {
-                request.setAttribute("createdOrder", receipt);
-            }
-            request.setAttribute("page", "orders");
-            request.getRequestDispatcher("/WEB-INF/views/request-history.jsp").forward(request, response);
+            showHistory(request, response, user);
             return;
         }
 
@@ -72,15 +68,15 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (!"/request".equals(request.getServletPath())) {
-            response.sendError(405);
-            return;
-        }
         HttpSession session = request.getSession(false);
         Account user = session != null && session.getAttribute("user") instanceof Account
                 ? (Account) session.getAttribute("user") : null;
         if (user == null || !"CUSTOMER".equals(user.getRole()) || !user.isActive()) {
             reject(request, response, 403, "Bạn không có quyền gửi yêu cầu dịch vụ.");
+            return;
+        }
+        if ("/orders".equals(request.getServletPath())) {
+            cancelOrder(request, response, user);
             return;
         }
         Order input = new Order();
@@ -136,7 +132,7 @@ public class OrderServlet extends HttpServlet {
             String formToken = OrderSupport.parameter(request, "orderFormToken", false);
             synchronized (session) {
                 if (!OrderSupport.validFormToken(session, formToken)) {
-                    reject(request, response, 409, "Biểu mẫu đã gửi hoặc đã được thay thế. Vui lòng kiểm tra xác nhận hoặc mở lại dịch vụ.");
+                    reject(request, response, 409, "Biểu mẫu đã gửi hoặc đã được thay thế. Vui lòng kiểm tra lịch sử hoặc mở lại dịch vụ.");
                     return;
                 }
                 try (OrderDAO dao = new OrderDAO()) {
@@ -149,7 +145,7 @@ public class OrderServlet extends HttpServlet {
                     getServletContext().log("Đơn đã commit nhưng đóng connection có lỗi.", ex);
                 }
                 session.removeAttribute("orderFormToken");
-                session.setAttribute("createdOrder", input);
+                session.setAttribute("orderMessage", "Đã gửi yêu cầu #" + input.getOrderId() + ".");
             }
             response.sendRedirect(request.getContextPath() + "/orders");
             return;
@@ -165,6 +161,68 @@ public class OrderServlet extends HttpServlet {
             loadForm(request, response, user, input.getServiceId(), false);
         }
         render(request, response);
+    }
+
+    private void cancelOrder(HttpServletRequest request, HttpServletResponse response, Account user)
+            throws ServletException, IOException {
+        try {
+            if (!"cancel".equals(OrderSupport.parameter(request, "action", true))) {
+                throw new IllegalArgumentException("Thao tác đơn không hợp lệ.");
+            }
+            int orderId = OrderSupport.positiveInt(OrderSupport.parameter(request, "orderId", true), "Mã đơn");
+            boolean cancelled;
+            try (OrderDAO dao = new OrderDAO()) {
+                cancelled = dao.cancelPending(orderId, user.getAccountId());
+            }
+            if (cancelled) {
+                HttpSession session = request.getSession(false);
+                synchronized (session) {
+                    session.setAttribute("orderMessage", "Đã hủy yêu cầu #" + orderId + ".");
+                }
+                response.sendRedirect(request.getContextPath() + "/orders");
+                return;
+            }
+            response.setStatus(409);
+            request.setAttribute("errorMessage", "Không thể hủy: đơn không thuộc tài khoản của bạn hoặc không còn chờ tiếp nhận.");
+        } catch (IllegalArgumentException ex) {
+            response.setStatus(400);
+            request.setAttribute("errorMessage", ex.getMessage());
+        } catch (SQLException ex) {
+            getServletContext().log("Không thể hủy yêu cầu dịch vụ.", ex);
+            response.setStatus(503);
+            request.setAttribute("errorMessage", "Chưa thể hủy yêu cầu lúc này. Vui lòng thử lại sau.");
+        }
+        showHistory(request, response, user);
+    }
+
+    private void showHistory(HttpServletRequest request, HttpServletResponse response, Account user)
+            throws ServletException, IOException {
+        request.setAttribute("page", "orders");
+        request.setAttribute("dateFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        request.setAttribute("dateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        try (OrderDAO dao = new OrderDAO()) {
+            // Không nhận accountId/orderId từ URL; chi tiết chỉ đọc theo các đơn thuộc owner này.
+            List<Order> orders = dao.getOrdersByAccount(user.getAccountId());
+            request.setAttribute("orders", orders);
+            request.setAttribute("historyLoaded", true);
+            if (request.getAttribute("errorMessage") == null) {
+                HttpSession session = request.getSession(false);
+                synchronized (session) {
+                    Object message = session.getAttribute("orderMessage");
+                    if (message instanceof String) {
+                        request.setAttribute("message", message);
+                        session.removeAttribute("orderMessage");
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            getServletContext().log("Không thể đọc lịch sử yêu cầu dịch vụ.", ex);
+            response.setStatus(503);
+            request.removeAttribute("orders");
+            request.setAttribute("historyLoaded", false);
+            request.setAttribute("errorMessage", "Chưa thể tải lịch sử yêu cầu lúc này. Vui lòng thử lại sau.");
+        }
+        request.getRequestDispatcher("/WEB-INF/views/request-history.jsp").forward(request, response);
     }
 
     private void loadForm(HttpServletRequest request, HttpServletResponse response, Account user,

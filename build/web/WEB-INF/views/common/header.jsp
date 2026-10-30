@@ -17,6 +17,9 @@
                         <a href="<c:url value='/admin/services'/>" aria-current="${page eq 'admin-services' ? 'page' : 'false'}">QL Dịch vụ</a>
                         <a href="<c:url value='/admin/users'/>" aria-current="${page eq 'users' ? 'page' : 'false'}">Tài khoản</a>
                     </c:if>
+                    <c:if test="${sessionScope.user.role eq 'CUSTOMER'}">
+                        <a href="<c:url value='/orders'/>" aria-current="${page eq 'orders' ? 'page' : 'false'}">Lịch sử yêu cầu</a>
+                    </c:if>
                     <a href="<c:url value='/profile'/>" aria-current="${page eq 'profile' ? 'page' : 'false'}">Hồ sơ</a>
                     <form action="<c:url value='/logout'/>" method="post" class="nav-form">
                         <input type="hidden" name="csrf" value="<c:out value='${sessionScope.csrfToken}'/>">

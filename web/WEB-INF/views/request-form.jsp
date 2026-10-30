@@ -135,9 +135,7 @@
             </section>
         </form>
     </c:if>
-    <c:if test="${empty selectedService and not empty sessionScope.createdOrder}">
-        <p><a class="text-link" href="<c:url value='/orders'/>">Xem xác nhận yêu cầu vừa gửi</a></p>
-    </c:if>
+    <p><a class="text-link" href="<c:url value='/orders'/>">Xem lịch sử yêu cầu</a></p>
     <a class="text-link" href="<c:url value='/services'/>">← Quay lại chọn dịch vụ</a>
 </main>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

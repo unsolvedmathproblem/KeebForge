@@ -89,6 +89,95 @@
     display: none;
 }
 
+.order-history-main {
+    max-width: 1100px;
+}
+
+.order-card {
+    margin-bottom: 24px;
+}
+
+.order-card h2,
+.order-service-name {
+    overflow-wrap: anywhere;
+}
+
+.order-heading,
+.order-summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.order-heading {
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+}
+
+.order-service-name {
+    color: var(--green);
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.order-metadata {
+    margin-bottom: 24px;
+}
+
+.order-card h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.order-text-block p {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+.order-parts {
+    min-width: 600px;
+}
+
+.order-summary {
+    align-items: center;
+    padding-top: 24px;
+}
+
+.order-summary p {
+    margin: 0;
+}
+
+.order-summary strong {
+    display: block;
+    color: var(--green);
+    font-size: 1.5rem;
+}
+
+.order-status-PENDING {
+    color: #795610;
+    background: #fff3cf;
+}
+
+.order-status-PROCESSING {
+    color: #205a79;
+    background: #e6f2fa;
+}
+
+.order-status-COMPLETED {
+    color: var(--green);
+    background: #e9f0e7;
+}
+
+.order-status-CANCELLED {
+    color: #535a57;
+    background: #eceeec;
+}
+
 @media (max-width: 767px) {
     .request-service {
         flex-direction: column;
