@@ -3,7 +3,7 @@
 Workshop bàn phím cho đồ án PRJ301.
 - **P1 (đã nghiệm thu):** đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
 - **P2 (đã nghiệm thu):** trang chủ đọc DB, catalog linh kiện (tìm kiếm/lọc/phân trang/ảnh dự phòng), danh sách dịch vụ & đọc đánh giá, quản trị linh kiện và quản trị dịch vụ Admin.
-- **P3 (đến P3-04):** gửi yêu cầu với giá/snapshot từ DB, transaction/chống gửi trùng; lịch sử cá nhân và hủy đơn PENDING đúng chủ đơn. Đánh giá, quản trị đơn và dashboard chưa triển khai.
+- **P3 (đến P3-05):** gửi yêu cầu với giá/snapshot từ DB, transaction/chống gửi trùng; lịch sử cá nhân/hủy PENDING; Admin lọc đơn, cập nhật trạng thái/ghi chú và dashboard. Phần gửi đánh giá chưa triển khai.
 
 Thành viên nhóm: **Nguyễn Văn Lê Hào, Nguyễn Anh Tiền, Vũ Hoàng Nguyên**.
 
@@ -40,6 +40,7 @@ Giữ metadata `nbproject` dùng chung để thành viên khác mở/build proje
 Các route hiện có: `/home`, `/parts`, `/services`, `/login`, `/register`, `/profile`,
 POST `/logout`, `/admin/products`, `/admin/services`, `/admin/users`.
 P3 thêm GET/POST `/request?serviceId=...`, GET `/orders` (lịch sử cá nhân), POST `/orders action=cancel`.
+Admin thêm GET/POST `/admin/orders` (action=status/note), GET `/admin/dashboard`.
 Mọi path ở sau context `/KeebForce`.
 
 ## Tài liệu và bản bàn giao
@@ -50,6 +51,7 @@ Mọi path ở sau context `/KeebForce`.
 - [Báo cáo bàn giao P2](docs/handover-p2.md): model/getter/DAO bàn giao cho P3, kết quả kiểm tra và hướng dẫn chụp ảnh P2.
 - [P3-03](docs/p3-03.md): gửi yêu cầu, transaction/giá từ DB, token một lần và kiểm tra JDBC/HTTP.
 - [P3-04](docs/p3-04.md): lịch sử/chi tiết theo chủ đơn, hủy PENDING và kiểm tra quyền.
+- [P3-05](docs/p3-05.md): Admin đơn/trạng thái/ghi chú, dashboard và kiểm tra đồng thời.
 - `dist/KeebForce.war`: bản deploy.
 - `dist/KeebForce-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
   không chứa cấu hình máy hoặc mật khẩu SQL thật.

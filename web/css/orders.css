@@ -178,7 +178,50 @@
     background: #eceeec;
 }
 
+.order-filter {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.order-filter .form-field {
+    min-width: 220px;
+    margin: 0;
+}
+
+.order-admin-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+    border-top: 1px solid var(--line);
+    margin-top: 24px;
+    padding-top: 24px;
+}
+
+.order-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.order-stat h2 {
+    font-size: 1.05rem;
+}
+
+.order-stat .stat-value {
+    color: var(--green);
+    font-size: 1.8rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
 @media (max-width: 767px) {
+    .order-admin-actions,
+    .order-stats-grid {
+        grid-template-columns: 1fr;
+    }
     .request-service {
         flex-direction: column;
         gap: 20px;

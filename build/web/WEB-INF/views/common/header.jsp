@@ -13,6 +13,8 @@
                 <c:when test="${not empty sessionScope.user}">
                     <c:if test="${sessionScope.user.role eq 'ADMIN'}">
                         <span class="account-badge">Quản trị viên</span>
+                        <a href="<c:url value='/admin/dashboard'/>" aria-current="${page eq 'admin-dashboard' ? 'page' : 'false'}">Tổng quan</a>
+                        <a href="<c:url value='/admin/orders'/>" aria-current="${page eq 'admin-orders' ? 'page' : 'false'}">QL Đơn</a>
                         <a href="<c:url value='/admin/products'/>" aria-current="${page eq 'admin-products' ? 'page' : 'false'}">QL Linh kiện</a>
                         <a href="<c:url value='/admin/services'/>" aria-current="${page eq 'admin-services' ? 'page' : 'false'}">QL Dịch vụ</a>
                         <a href="<c:url value='/admin/users'/>" aria-current="${page eq 'users' ? 'page' : 'false'}">Tài khoản</a>

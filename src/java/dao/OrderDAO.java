@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
+import java.util.LinkedHashMap;
 import model.Order;
 import model.OrderDetail;
 import model.ServiceReview;
@@ -201,6 +203,67 @@ public class OrderDAO extends DBContext {
             statement.setInt(3, accountId);
             return statement.executeUpdate() == 1;
         }
+    }
+
+    /** Caller đã kiểm tra ADMIN ở Filter/Servlet; trạng thái nguồn kiểm tra ngay tại UPDATE. */
+    public boolean updateStatus(int orderId, String newStatus) throws SQLException {
+        String source;
+        if ("PROCESSING".equals(newStatus) || "CANCELLED".equals(newStatus)) {
+            source = "PENDING";
+        } else if ("COMPLETED".equals(newStatus)) {
+            source = "PROCESSING";
+        } else {
+            throw new IllegalArgumentException("Trạng thái đích không hợp lệ.");
+        }
+        String sql = "UPDATE dbo.ServiceOrder SET OrderStatus = ?, "
+                + "CompletedAt = CASE WHEN ? = 'COMPLETED' THEN SYSDATETIME() ELSE CompletedAt END "
+                + "WHERE OrderID = ? AND OrderStatus = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, newStatus);
+            statement.setString(2, newStatus);
+            statement.setInt(3, orderId);
+            statement.setString(4, source);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    /** Ghi chú hiện tại, kể cả khi đơn đã kết thúc; không thay thông tin/giá của khách. */
+    public boolean updateAdminNote(int orderId, String note) throws SQLException {
+        String text = checkedText(note, 1000, false, "Ghi chú Admin");
+        try (PreparedStatement statement = connection.prepareStatement(
+                "UPDATE dbo.ServiceOrder SET AdminNote = ? WHERE OrderID = ?")) {
+            statement.setNString(1, text);
+            statement.setInt(2, orderId);
+            return statement.executeUpdate() == 1;
+        }
+    }
+
+    /** Một query thống kê; không có dòng nào vẫn trả số 0 sau khi SELECT thành công. */
+    public Map<String, Object> getStatistics() throws SQLException {
+        Map<String, Object> statistics = new LinkedHashMap<>();
+        for (String status : List.of("PENDING", "PROCESSING", "COMPLETED", "CANCELLED")) {
+            statistics.put(status, 0L);
+        }
+        long total = 0;
+        BigDecimal completedValue = BigDecimal.ZERO;
+        String sql = "SELECT OrderStatus, COUNT_BIG(*) AS OrderCount, "
+                + "SUM(CASE WHEN OrderStatus = 'COMPLETED' THEN TotalAmount ELSE 0 END) AS CompletedValue "
+                + "FROM dbo.ServiceOrder GROUP BY OrderStatus";
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery()) {
+            while (result.next()) {
+                String status = result.getString("OrderStatus");
+                long count = result.getLong("OrderCount");
+                statistics.put(status, count);
+                total += count;
+                if ("COMPLETED".equals(status)) {
+                    completedValue = result.getBigDecimal("CompletedValue");
+                }
+            }
+        }
+        statistics.put("totalOrders", total);
+        statistics.put("completedValue", completedValue);
+        return statistics;
     }
 
     /** accountId phải lấy từ session.user, không lấy từ tham số trình duyệt. */
