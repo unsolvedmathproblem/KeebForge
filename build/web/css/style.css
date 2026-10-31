@@ -989,6 +989,16 @@ h3 {
     margin-bottom: 8px;
 }
 
+.review-header strong {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.catalog-grid .workshop-card h2 {
+    overflow-wrap: anywhere;
+}
+
 .review-rating {
     color: var(--orange);
     font-weight: 700;

@@ -1,0 +1,10 @@
+TableName       Rows       
+--------------- -----------
+UserAccount               3
+Brand                     3
+Category                  5
+Product                  10
+WorkshopService           4
+ServiceOrder              0
+OrderDetail               0
+ServiceReview             0

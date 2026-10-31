@@ -50,7 +50,7 @@ Tổng project hiện có **18 class Java production** (7 class P1 + 11 class P2
 ## 3. Artifact và kiểm chứng cuối
 
 - `dist/KeebForce.war`: **5.625.336 bytes**
-- SHA-256 WAR: `B09841FFFD1A2BC1C3A5CBFC933350D57EC87CDA60F3FF959BC952BD93D8C499`
+- SHA-256 WAR: `1ADD9566E9A8FD5AFA6EE3F5389749B4A387B14ADEE20F7CC47CFC893524955A`
 
 | Hạng mục kiểm tra | Kết quả thực tế |
 | --- | --- |

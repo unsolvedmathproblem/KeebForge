@@ -1,18 +1,21 @@
-# Chạy KeebForce — P1-01 đến P1-07
+# Chạy KeebForce — P1, P2 và P3
 
 **P1 đã được người dùng nghiệm thu và kết thúc ngày 28/10/2026.**
-Hướng dẫn dưới đây phục vụ bàn giao/chạy lại; chưa bao gồm triển khai P2/P3.
+P2 đã nghiệm thu; P3 đã được người dùng xác nhận nghiệm thu ngày 30/10/2026.
+Xem [bàn giao P2](handover-p2.md) và [bàn giao P3](handover-p3.md)
+cho catalog, đơn/review và kết quả kiểm tra mới nhất. Các mục ghi P1 bên dưới giữ
+lại làm lịch sử bàn giao nền tảng.
 
 Project Java Web with Ant, NetBeans 17, JDK 17, **Tomcat 10.1**
 (Servlet 6 / JSP 3.1 / JSTL 3), SQL Server 2019 trở lên.
 Đã có schema 8 bảng, auth, AuthFilter/CSRF, cập nhật hồ sơ và quản lý tài khoản Admin.
-Chưa triển khai catalog/đặt dịch vụ thuộc P2/P3.
+Source hiện tại đã có catalog P2 và đặt dịch vụ/quản lý đơn/review P3.
 Hướng dẫn ghép JSP, form, bảng và tiền VND dùng chung: [ui-guide.md](ui-guide.md).
 Kiểm tra cuối và artifact bàn giao: [handover-p1.md](handover-p1.md).
 
 ## Mở và build
 
-1. NetBeans 17 → Open Project → chọn thư mục KeebForce.
+1. NetBeans 17 → Open Project → chọn thư mục project KeebForce.
 2. Project Properties → Libraries/Java Platform: JDK 17.
 3. Project Properties → Run → chọn Tomcat 10.1 đã đăng ký ở máy bạn,
    context path `/KeebForce`. Các đường dẫn server local nằm trong

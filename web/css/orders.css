@@ -1,0 +1,257 @@
+/* Phần bổ sung cho form đơn, dùng màu và các thành phần chung của P1. */
+.request-main {
+    max-width: 1040px;
+}
+
+.request-service {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 24px;
+}
+
+.request-service h2 {
+    margin-top: 12px;
+}
+
+.request-description {
+    margin-bottom: 0;
+    color: var(--muted);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.request-service-price {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--green);
+}
+
+.request-service-price strong,
+.request-estimate output {
+    font-size: 1.5rem;
+}
+
+.request-section {
+    margin-bottom: 24px;
+}
+
+.request-section textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.request-part-choice {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.request-part-choice label {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.request-part-choice input {
+    flex-shrink: 0;
+}
+
+.request-part-category {
+    display: block;
+    margin: 4px 0 0 28px;
+    color: var(--muted);
+}
+
+.request-quantity {
+    min-width: 88px;
+    max-width: 112px;
+}
+
+.request-parts td {
+    /* Giữ label ẩn trong ô khi bảng cuộn ngang trên màn hình nhỏ. */
+    position: relative;
+}
+
+.request-estimate {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+    color: var(--green);
+    font-weight: 700;
+}
+
+.request-estimate[hidden] {
+    display: none;
+}
+
+.order-history-main {
+    max-width: 1100px;
+}
+
+.order-card {
+    margin-bottom: 24px;
+}
+
+.order-card h2,
+.order-service-name {
+    overflow-wrap: anywhere;
+}
+
+.order-heading,
+.order-summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.order-heading {
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+}
+
+.order-service-name {
+    color: var(--green);
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.order-metadata {
+    margin-bottom: 24px;
+}
+
+.order-card h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.order-text-block p {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+.order-parts {
+    min-width: 600px;
+}
+
+.order-summary {
+    align-items: center;
+    padding-top: 24px;
+}
+
+.order-summary p {
+    margin: 0;
+}
+
+.order-summary strong {
+    display: block;
+    color: var(--green);
+    font-size: 1.5rem;
+}
+
+.order-status-PENDING {
+    color: #795610;
+    background: #fff3cf;
+}
+
+.order-status-PROCESSING {
+    color: #205a79;
+    background: #e6f2fa;
+}
+
+.order-status-COMPLETED {
+    color: var(--green);
+    background: #e9f0e7;
+}
+
+.order-status-CANCELLED {
+    color: #535a57;
+    background: #eceeec;
+}
+
+.order-filter {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.order-filter .form-field {
+    min-width: 220px;
+    margin: 0;
+}
+
+.order-admin-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+    border-top: 1px solid var(--line);
+    margin-top: 24px;
+    padding-top: 24px;
+}
+
+.order-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.order-review {
+    border-top: 1px solid var(--line);
+    margin-top: 24px;
+    padding-top: 24px;
+}
+
+.order-review-rating {
+    max-width: 240px;
+}
+
+.order-review textarea {
+    resize: vertical;
+}
+
+.order-review .review-comment {
+    white-space: pre-wrap;
+}
+
+.order-review-link {
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+
+.order-stat h2 {
+    font-size: 1.05rem;
+}
+
+.order-stat .stat-value {
+    color: var(--green);
+    font-size: 1.8rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+    .order-admin-actions,
+    .order-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .request-service {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .request-estimate {
+        flex-wrap: wrap;
+    }
+}

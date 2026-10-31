@@ -1,0 +1,15 @@
+{
+  "verifiedDate": "2026-10-30",
+  "baseUrl": "http://127.0.0.1:18080/KeebForce",
+  "browser": "Chrome via DevTools, separate customer/admin/public contexts",
+  "flow": "Header services link -> catalog request link -> native request form -> history -> Admin accept/note/complete -> customer review form -> public review link -> Admin dashboard",
+  "browserOrderId": 140,
+  "request": {"serviceId": 1, "productIds": [1,2,3], "quantities": [1,70,1], "estimatedTotal": 2050000, "nativeValidityBeforeSubmit": true},
+  "customerHistory": {"pendingVisibleAfterSubmit": true, "completedVisibleAfterAdmin": true, "adminNoteVisible": true, "savedReviewVisible": true, "reviewFormAbsentAfterSubmit": true},
+  "publicReviews": {"count": 2, "average": 5.0, "contextLinksValid": true},
+  "dashboard": {"total": 4, "pending": 0, "processing": 0, "completed": 2, "cancelled": 2, "completedValue": 4100000},
+  "mobile": {"emulatedViewport": "390x844x1,mobile,touch", "publicPageWidth": 390, "historyPageWidth": 390, "historyTableContainerWidth": 298, "historyTableScrollWidth": 600, "brokenContextLinks": 0},
+  "screenshots": ["01-services-desktop.png","02-request-desktop.png","03-history-pending.png","04-admin-processing.png","05-review-form.png","06-history-reviewed.png","07-public-reviews.png","08-dashboard.png","09-public-reviews-mobile.png","10-history-mobile.png"],
+  "fixtureCleanup": "VerifyP307 checked SQL after browser flow and restored all 8 tables; captured order IDs and fixture accounts no longer exist",
+  "limitations": ["Mobile emulation only; no physical phone", "NetBeans graphical Run not exercised"]
+}

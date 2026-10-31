@@ -24,8 +24,8 @@ cần xóa. P1 không thêm Model/DAO của P2/P3 để lấp đầy cây packag
 
 ## Artifact
 
-- `dist/KeebForce.war`: bản deploy đã đồng bộ tên KeebForce.
-- Dung lượng và SHA-256 bản đổi tên ghi trong progress/P1.md ngoài repository.
+- `dist/KeebForce.war`: 5.491.786 bytes (đã cập nhật bản sửa cấu hình DB mặc định).
+- SHA-256 WAR: `BD133F837E7935F239C0CA3B0EB872146AA76FF1699D73C9FC445B13AB310346`.
 - `dist/KeebForce-P1-source.zip`: source/JAR/SQL/docs/metadata chia sẻ,
   không config thật, DLL, Git internals, output build hoặc requirement bên ngoài.
 

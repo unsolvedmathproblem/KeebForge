@@ -1,0 +1,71 @@
+﻿OK 1 Empty DB statistics are actual zeros
+OK 2 Empty dashboard renders zero counts
+OK 3 Actual empty admin list
+OK 4 DAO blocks PENDING to COMPLETED jump
+OK 5 DAO cannot reopen terminal orders
+OK 6 DAO cannot cancel a processing order
+OK 7 DAO reports affected=false for missing order
+OK 8 DAO rejects unsupported target status
+OK 9 DAO enforces note length
+OK 10 DAO accepts 1000-character note
+OK 11 Blank note stored as NULL
+OK 12 Initial grouped statistics match independent SQL
+OK 13 DAO filter PENDING
+OK 14 DAO filter PROCESSING
+OK 15 DAO filter COMPLETED
+OK 16 DAO filter CANCELLED
+OK 17 Anonymous blocked /admin/orders
+OK 18 Customer blocked /admin/orders
+OK 19 Anonymous blocked /admin/dashboard
+OK 20 Customer blocked /admin/dashboard
+OK 21 Admin sees all owners and details
+OK 22 Admin shows exact snapshots and escaped device/parts
+OK 23 UI exposes only allowed transitions
+OK 24 HTTP status filter PENDING
+OK 25 HTTP status filter PROCESSING
+OK 26 HTTP status filter COMPLETED
+OK 27 HTTP status filter CANCELLED
+OK 28 Malformed filter rejected ?status=INVALID
+OK 29 Malformed filter rejected ?status=PENDING&status=COMPLETED
+OK 30 Malformed filter rejected ?status=PENDING%27%20OR%201%3D1
+OK 31 Customer cannot forge Admin POST
+OK 32 Missing CSRF denied
+OK 33 Bad CSRF denied
+OK 34 Dashboard GET only
+OK 35 Invalid order ID 
+OK 36 Invalid order ID 0
+OK 37 Invalid order ID -1
+OK 38 Invalid order ID abc
+OK 39 Invalid order ID 2147483648
+OK 40 Duplicate ID rejected
+OK 41 Unknown action rejected
+OK 42 Invalid target rejected by HTTP
+OK 43 HTTP blocks status jump
+OK 44 HTTP cannot reopen completed/cancelled
+OK 45 Missing order conflict
+OK 46 Note updates only AdminNote, ignores other fields
+OK 47 Customer history reads new AdminNote with HTML escape
+OK 48 Note overwrites current text, no timeline
+OK 49 Long note rejected, draft retained, DB unchanged
+OK 50 Admin can clear note
+OK 51 Duplicate note rejected
+OK 52 Bad return filter cannot mutate order
+OK 53 Accept PENDING with PRG and filter preserved
+OK 54 Admin flash shown once
+OK 55 PROCESSING to COMPLETED succeeds
+OK 56 CompletedAt set by DB, snapshots/details untouched
+OK 57 Repeat completion does not reset CompletedAt
+OK 58 Cannot cancel PROCESSING through Admin
+OK 59 Existing PROCESSING completes
+OK 60 Admin rejects PENDING without CompletedAt
+OK 61 Terminal order note editable without reopening
+OK 62 Simultaneous acceptance has one winner
+OK 63 Admin acceptance races customer cancellation safely
+OK 64 Concurrent completion has one winner
+OK 65 Completed count and sum match DB after transitions/races
+OK 66 Dashboard exact completed value includes fixture delta 2650000 and required label
+OK 67 Protected Admin JSP orders
+OK 68 Protected Admin JSP dashboard
+OK 69 Locked Admin cannot read/write using old session
+OK 70 Fixture cleanup restores all 8 table counts and statistics
+PASS 70 JDBC/HTTP checks.
