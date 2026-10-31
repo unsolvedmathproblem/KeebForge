@@ -119,7 +119,7 @@ không copy nguyên DBContext Q3 để lại connection null hoặc thiếu clos
 Đã cấu hình đúng server NetBeans, restart và chạy 18 kiểm tra HTTP/SQL đạt ngay
 trên cổng 8080, không truyền keebforce.db.config từ lệnh chạy thử.
 
-Theo yêu cầu người dùng, hai DB cũ KeebForgeDB/KeebForge_P102_Verify được backup
+Theo yêu cầu người dùng, hai DB cũ [DB workshop cũ]/[DB kiểm thử cũ] được backup
 COPY_ONLY/CHECKSUM, VERIFYONLY rồi xóa; KeebForce_PRJ301 được giữ nguyên.
 Đường dẫn backup và cách cấu hình mới trong setup.md. Không đưa DROP vào script app,
 không thực hiện Git ghi dữ liệu. Các kết quả P1-07 ở trên là lịch sử trước lần sửa;
@@ -134,3 +134,7 @@ vẫn giữ nguyên như phần báo cáo, không được coi là đã chạy t
 Lần chốt này chỉ cập nhật tài liệu/source ZIP, không sửa nghiệp vụ, DB hoặc server.
 
 **Trạng thái: đã nghiệm thu và kết thúc P1. Dừng tại đây, chưa triển khai P2/P3.**
+
+## Đồng bộ tên project — 29/10/2026
+
+Đổi tên giao diện, cấu hình DB và tài liệu sang KeebForce. Tomcat dùng conf/keebforce-db.properties và conf/keebforce-native; context /KeebForce trỏ tới D:/source_code/PRJ301/KeebForce/build/web. Database KeebForce_PRJ301 và dữ liệu giữ nguyên. Tên DB/backup cũ trong lịch sử giữ để tra cứu.

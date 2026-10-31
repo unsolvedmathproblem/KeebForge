@@ -1,64 +1,65 @@
-# KeebForce — Assignment
+<div align="center">
 
-Workshop bàn phím cho đồ án PRJ301.
-- **P1 (đã nghiệm thu):** đăng ký/login/logout, hồ sơ cá nhân, phân quyền/CSRF và quản lý tài khoản Admin.
-- **P2 (đã nghiệm thu):** trang chủ đọc DB, catalog linh kiện (tìm kiếm/lọc/phân trang/ảnh dự phòng), danh sách dịch vụ & đọc đánh giá, quản trị linh kiện và quản trị dịch vụ Admin.
-- **P3 (đã nghiệm thu ngày 30/10/2026):** gửi yêu cầu với giá/snapshot từ DB, transaction/chống gửi trùng; lịch sử/hủy PENDING; Admin quản lý đơn/dashboard; đánh giá một lần và public review. Đã kiểm tra toàn luồng trên Tomcat/SQL Server và Chrome, lưu báo cáo cùng 10 ảnh chụp.
+# ⌨️ KeebForce
+### Website workshop bàn phím cơ
 
-Thành viên nhóm: **Nguyễn Văn Lê Hào, Nguyễn Anh Tiền, Vũ Hoàng Nguyên**.
+*Assignment môn PRJ301 – Java Web Application Development*
 
-## Chạy project
+**FPT University**
 
-1. Mở thư mục này bằng **NetBeans 17**, chọn **JDK 17** và **Tomcat 10.1**.
-2. Trên SQL Server 2019+, nếu chưa có database KeebForce_PRJ301, chạy lần lượt
-   `database/01_create_database.sql`, `02_schema.sql`, `03_seed.sql`.
-   Máy đã có DB/dữ liệu thì không chạy lại các script tạo/seed; dùng `04_verify.sql`.
-3. Copy `config/db.properties.example` (SQL login) hoặc `db-windows.properties.example`
-   thành **TOMCAT_BASE/conf/keebforce-db.properties** rồi điền cấu hình máy bạn.
-   Windows auth cần DLL/setenv theo [docs/setup.md](docs/setup.md).
-   DBContext tự đọc file này; không cần đặt VM Option cho đường dẫn DB.
-4. Clean and Build rồi Run Project. Mở `http://localhost:8080/KeebForce/`.
+---
 
-Ant đi kèm NetBeans trên máy hiện tại:
+</div>
 
-```powershell
-& 'C:\Program Files\NetBeans-17\netbeans\extide\ant\bin\ant.bat' clean dist
-```
+## 📖 Giới thiệu
 
-Giữ metadata `nbproject` dùng chung để thành viên khác mở/build project;
-`nbproject/private`, `build`, `dist`, config DB thật và DLL local được ignore.
+**KeebForce** là website workshop dành cho những người yêu thích bàn phím cơ, giúp khách hàng khám phá linh kiện và tìm hiểu các dịch vụ lắp ráp, vệ sinh, chăm sóc bàn phím.
 
-## Tài khoản demo
+Dự án được xây dựng nhằm vận dụng kiến thức Java Web vào một ứng dụng thực tế, kết hợp giao diện dành cho khách hàng với khu vực quản trị tài khoản, linh kiện và dịch vụ.
 
-| Username | Password demo | Role |
-| --- | --- | --- |
-| admin | Admin@123 | ADMIN |
-| customer1 | Customer@123 | CUSTOMER |
-| customer2 | Customer@123 | CUSTOMER |
+## ✨ Chức năng chính
 
-Đây là tài khoản website giả lập, không phải SQL Server login.
-Các route hiện có: `/home`, `/parts`, `/services`, `/login`, `/register`, `/profile`,
-POST `/logout`, `/admin/products`, `/admin/services`, `/admin/users`.
-P3 thêm GET/POST `/request?serviceId=...`, GET `/orders` (lịch sử cá nhân), POST `/orders action=cancel/review`.
-Admin thêm GET/POST `/admin/orders` (action=status/note), GET `/admin/dashboard`.
-Mọi path ở sau context `/KeebForce`.
+### Khách hàng
 
-## Tài liệu và bản bàn giao
+- Đăng ký, đăng nhập và quản lý hồ sơ cá nhân.
+- Khám phá các linh kiện và bàn phím trên trang chủ.
+- Tìm kiếm, lọc linh kiện theo danh mục, thương hiệu và xem danh sách phân trang.
+- Xem danh sách dịch vụ workshop, giá dịch vụ và đánh giá của khách hàng.
 
-- [Setup](docs/setup.md): môi trường, JAR, cấu hình DB/Tomcat và cách chạy SQL.
-- [UI dùng chung](docs/ui-guide.md): JSP include, CSS, message, CSRF và money.tag.
-- [Báo cáo bàn giao P1](docs/handover-p1.md): kiểm tra cuối, artifact và giới hạn P1.
-- [Báo cáo bàn giao P2](docs/handover-p2.md): model/getter/DAO bàn giao cho P3, kết quả kiểm tra và hướng dẫn chụp ảnh P2.
-- [P3-03](docs/p3-03.md): gửi yêu cầu, transaction/giá từ DB, token một lần và kiểm tra JDBC/HTTP.
-- [P3-04](docs/p3-04.md): lịch sử/chi tiết theo chủ đơn, hủy PENDING và kiểm tra quyền.
-- [P3-05](docs/p3-05.md): Admin đơn/trạng thái/ghi chú, dashboard và kiểm tra đồng thời.
-- [P3-06](docs/p3-06.md): review đúng owner/completed/một lần và ghép trang dịch vụ P2.
-- [Bàn giao P3 và nghiệm thu P3-07](docs/handover-p3.md): 343 kiểm tra JDBC/HTTP, bằng chứng Chrome/SQL, ảnh desktop/mobile và giới hạn chưa kiểm tra.
-- `dist/KeebForce.war`: bản deploy.
-- `dist/KeebForce-P1-source.zip`: source P1 kèm metadata/SQL/JAR/docs,
-  không chứa cấu hình máy hoặc mật khẩu SQL thật.
+### Quản trị viên
 
-Kiến trúc: Servlet gọi DAO trực tiếp, Account JavaBean và JSP/JSTL.
-Không Maven, service layer, DTO/interface hoặc framework CRUD.
-Requirement và progress được quản lý ở thư mục bên ngoài repository;
-không đóng requirement vào source/WAR.
+- Xem danh sách, khóa và mở khóa tài khoản khách hàng.
+- Thêm, cập nhật và ẩn hoặc hiển thị linh kiện.
+- Thêm, cập nhật và ẩn hoặc hiển thị dịch vụ workshop.
+
+## 🧰 Công nghệ sử dụng
+
+| Công nghệ | Vai trò |
+|---|---|
+| Java 17, Servlet | Xử lý yêu cầu và điều hướng ứng dụng |
+| JSP / JSTL | Hiển thị dữ liệu và xây dựng giao diện động |
+| JDBC | Kết nối và truy vấn cơ sở dữ liệu |
+| Microsoft SQL Server | Lưu trữ dữ liệu |
+| Apache Tomcat 10.1 | Chạy ứng dụng web |
+| HTML, CSS, Bootstrap | Xây dựng giao diện responsive |
+| Apache Ant, NetBeans 17 | Phát triển, biên dịch và đóng gói project |
+
+Ứng dụng tổ chức theo mô hình Servlet – DAO – JavaBean – JSP: Servlet xử lý yêu cầu, gọi DAO để thao tác dữ liệu và chuyển kết quả đến JSP để hiển thị.
+
+## 👥 Thành viên nhóm
+
+1. Nguyễn Văn Lê Hào
+2. Nguyễn Anh Tiền
+3. Vũ Hoàng Nguyên
+
+## 🎯 Mục tiêu
+
+Xây dựng website workshop bàn phím có kết nối cơ sở dữ liệu, thực hành quản lý tài khoản, linh kiện và dịch vụ; đồng thời củng cố kiến thức về xử lý yêu cầu, quản lý phiên đăng nhập, phân quyền và làm việc nhóm trong phát triển ứng dụng Java Web.
+
+---
+
+<div align="center">
+
+**KeebForce · PRJ301 Assignment** ⌨️
+
+</div>

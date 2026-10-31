@@ -533,14 +533,14 @@ trùng tài khoản, login/profile/update, CSRF/quyền, Admin list/lock/unlock/
 tất cả đạt. Không chỉ kiểm tra trên Tomcat tạm như các mốc đầu.
 
 Theo yêu cầu dọn DB thừa của người dùng, đã giữ KeebForce_PRJ301 và xóa hai DB schema
-cũ KeebForgeDB, KeebForge_P102_Verify sau COPY_ONLY/CHECKSUM và RESTORE VERIFYONLY.
+cũ [DB workshop cũ], [DB kiểm thử cũ] sau COPY_ONLY/CHECKSUM và RESTORE VERIFYONLY.
 Không tìm thấy source hiện tại trỏ tới hai DB cũ hoặc phiên SQL đang dùng chúng.
 Backup tại thư mục SQL Server:
 
 ```text
 C:\Program Files\Microsoft SQL Server\MSSQL17.MSSQLSERVER\MSSQL\Backup
-KeebForgeDB_before_cleanup_20261028_210938.bak
-KeebForge_P102_Verify_before_cleanup_20261028_210938.bak
+[bản backup DB cũ thứ nhất, ngày 28/10/2026]
+[bản backup DB cũ thứ hai, ngày 28/10/2026]
 ```
 
 Không sửa script để tự DROP/reset DB khi chạy app. Giữ dữ liệu seed/DB chính,
